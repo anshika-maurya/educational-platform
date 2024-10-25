@@ -93,11 +93,12 @@ export default function Upload({
             )}
           </div>
         ) : (
+          <label htmlFor="video">
           <div
             className="flex w-full flex-col items-center p-6"
             {...getRootProps()}
           >
-            <input {...getInputProps()} ref={inputRef} />
+            <input {...getInputProps()} ref={inputRef} id="video" />
             <div className="grid aspect-square w-14 place-items-center rounded-full bg-pure-greys-800">
               <FiUploadCloud className="text-2xl text-yellow-50" />
             </div>
@@ -111,6 +112,7 @@ export default function Upload({
               <li>Recommended size 1024x576</li>
             </ul>
           </div>
+          </label>
         )}
       </div>
       {errors[name] && (
