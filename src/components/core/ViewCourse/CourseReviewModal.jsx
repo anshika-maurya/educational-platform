@@ -3,20 +3,22 @@ import { useForm } from "react-hook-form"
 import { RxCross2 } from "react-icons/rx"
 import ReactStars from "react-rating-stars-component"
 import { useSelector } from "react-redux"
-
+import { useParams } from 'react-router';
 import { createRating } from "../../../services/operations/courseDetailsAPI"
 import IconBtn from "../../Common/IconBtn"
 
-export default function CourseReviewModal({ setReviewModal }) {
+export default function CourseReviewModal({ setReviewModal })  {
   const { user } = useSelector((state) => state.profile)
   const { token } = useSelector((state) => state.auth)
-  const { courseEntireData } = useSelector((state) => state.viewCourse)
+  const {courseId} = useParams();
+  // const { courseEntireData } = useSelector((state) => state.viewCourse)
 
   const {
     register,
     handleSubmit,
-    setValue,
     formState: { errors },
+    setValue,
+    getValues,
   } = useForm()
 
   useEffect(() => {
@@ -31,9 +33,10 @@ export default function CourseReviewModal({ setReviewModal }) {
   }
 
   const onSubmit = async (data) => {
-    await createRating(
+  const res = await createRating(
       {
-        courseId: courseEntireData._id,
+        // courseId: courseEntireData._id,
+        courseId: courseId,
         rating: data.courseRating,
         review: data.courseExperience,
       },
