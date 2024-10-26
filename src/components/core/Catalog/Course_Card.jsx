@@ -1,16 +1,11 @@
 import React, { useEffect, useState } from "react"
-// Icons
-// import { FaRegStar, FaStar } from "react-icons/fa"
-// import ReactStars from "react-rating-stars-component"
 import { Link } from "react-router-dom"
-
 import GetAvgRating from "../../../utils/avgRating"
 import RatingStars from "../../Common/RatingStars"
 
-function Course_Card({ course, Height }) {
-  // const avgReviewCount = GetAvgRating(course.ratingAndReviews)
-  // console.log(course.ratingAndReviews)
-  const [avgReviewCount, setAvgReviewCount] = useState(0)
+const Course_Card = ({course, Height}) => {
+  const [avgReviewCount, setAvgReviewCount] = useState(0);
+  
   useEffect(() => {
     const count = GetAvgRating(course.ratingAndReviews)
     setAvgReviewCount(count)
@@ -31,7 +26,7 @@ function Course_Card({ course, Height }) {
           <div className="flex flex-col gap-2 px-1 py-3">
             <p className="text-sm md:text-xl text-richblack-5">{course?.courseName}</p>
             <p className="text-[12px] md:text-xl text-richblack-50">By 
-            <span className='text-yellow-50'>{course?.instructor?.firstName} {course?.instructor?.lastName}</span>
+            {course?.instructor?.firstName} {course?.instructor?.lastName}
               
             </p>
             <div className="flex items-center gap-2">
