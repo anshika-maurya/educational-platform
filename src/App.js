@@ -1,4 +1,6 @@
 import React from "react";
+import toast from "react-hot-toast"
+import picture from '../src/assets/Images/Profile2.png'
 import "./App.css"
 import { useEffect, useState } from "react";
 
@@ -40,8 +42,7 @@ import ViewCourse from "./pages/ViewCourse"
 import { getUserDetails } from "./services/operations/profileAPI"
 import { ACCOUNT_TYPE } from "./utils/constants"
 
-import toast from "react-hot-toast"
-import picture from '../src/assets/Images/Profile2.png'
+
 
 function App() {
   const dispatch = useDispatch()
