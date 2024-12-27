@@ -300,10 +300,10 @@ export default function CourseInformationForm() {
             disabled={loading}
             className={`flex cursor-pointer items-center gap-x-2 rounded-md bg-richblack-300 py-[8px] px-[20px] font-semibold text-richblack-900`}
           >
-            Continue Wihout Saving
+            Continue Without Saving
           </button>
         )}
-        <IconBtn
+        <IconBtn type = {"submit"}
           disabled={loading}
           text={!editCourse ? "Next" : "Save Changes"}
         >
