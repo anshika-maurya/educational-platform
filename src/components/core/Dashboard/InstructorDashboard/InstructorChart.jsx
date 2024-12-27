@@ -1,13 +1,10 @@
-import React from 'react'
 import { useState } from "react"
-
+import { Chart, registerables } from "chart.js"
 import { Pie } from "react-chartjs-2"
-import {ArcElement,Chart} from 'chart.js'
 
-Chart.register(ArcElement)
+Chart.register(...registerables)
 
-
-const InstructorChart = ({courses}) => {
+export default function InstructorChart({ courses }) {
   // State to keep track of the currently selected chart
   const [currChart, setCurrChart] = useState("students")
 
@@ -33,7 +30,6 @@ const InstructorChart = ({courses}) => {
       },
     ],
   }
-  // console.log("chartDataStudents", chartDataStudents)
 
   // Data for the chart displaying income information
   const chartIncomeData = {
@@ -45,7 +41,7 @@ const InstructorChart = ({courses}) => {
       },
     ],
   }
-  // console.log("chartIncomeData",chartIncomeData)
+
   // Options for the chart
   const options = {
     maintainAspectRatio: false,
@@ -88,5 +84,3 @@ const InstructorChart = ({courses}) => {
     </div>
   )
 }
-
-export default InstructorChart
