@@ -109,7 +109,7 @@ const CourseDetails = () => {
         instructor,
         studentsEnrolled,
         createdAt,
-    } = courseData.data?.courseDetails;
+    } = courseData?.data?.courseDetails;
   return (
     <>
         {/* Details and Course Buy Card */}
@@ -195,7 +195,7 @@ const CourseDetails = () => {
                                         {totalNoOfLectures} lectures
                                     </span>
                                     <span>
-                                        {courseData.data?.totalDuration} total length
+                                        {courseData?.data?.totalDuration} total length
                                     </span>
                                 </div>
                                 <div>
