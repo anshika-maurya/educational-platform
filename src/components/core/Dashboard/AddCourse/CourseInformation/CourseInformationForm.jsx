@@ -304,7 +304,6 @@ export default function CourseInformationForm() {
           </button>
         )}
         <IconBtn type = {"submit"}
-          disabled={loading}
           text={!editCourse ? "Next" : "Save Changes"}
         >
           <MdNavigateNext />

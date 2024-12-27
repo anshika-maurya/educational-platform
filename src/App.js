@@ -1,6 +1,6 @@
 import React from "react";
 import "./App.css"
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 // React Router
 import { Route, Routes, useNavigate } from "react-router-dom"
@@ -40,11 +40,57 @@ import ViewCourse from "./pages/ViewCourse"
 import { getUserDetails } from "./services/operations/profileAPI"
 import { ACCOUNT_TYPE } from "./utils/constants"
 
+import toast from "react-hot-toast"
+import picture from '../src/assets/Images/Profile2.png'
 
 function App() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const { user } = useSelector((state) => state.profile)
+
+  const [toastStatus, settoastStatus] = useState(true)
+
+  if (toastStatus) {
+    toast.custom((t) => (
+      <div
+        className={`${
+          t.visible ? 'animate-enter' : 'animate-leave'
+        } max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+      >
+        <div className="flex-1 w-0 p-4">
+          <div className="flex items-start">
+            <div className="flex-shrink-0 pt-0.5">
+              <img
+                className="h-10 w-10 rounded-full"
+                src={picture}
+                alt=""
+              />
+            </div>
+            <div className="ml-3 flex-1">
+              <p className="text-sm font-medium text-gray-900">
+                Anshika Maurya
+              </p>
+              <p className="mt-1 text-sm text-gray-500">
+                Actually, Backend server is using free hoisting service which may require 8-10 sec to warm-up initially,
+                sorry for the inconvenience.
+              </p>
+            </div>
+          </div>
+        </div>
+        {/* <div className="flex border-l border-gray-200">
+          <button
+            onClick={() => toast.dismiss(t.id)}
+            className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-center justify-center text-sm font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          >
+            Close
+          </button>
+        </div> */}
+      </div>
+    ), {
+      duration: 4000,
+    })
+    settoastStatus(false)
+  }
 
   useEffect(() => {
     if (localStorage.getItem("token")) {
