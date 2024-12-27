@@ -1,3 +1,4 @@
+import React from 'react'
 import { useDispatch, useSelector } from "react-redux"
 import { Table, Tbody, Td, Th, Thead, Tr } from "react-super-responsive-table"
 
@@ -9,43 +10,48 @@ import { FiEdit2 } from "react-icons/fi"
 import { HiClock } from "react-icons/hi"
 import { RiDeleteBin6Line } from "react-icons/ri"
 import { useNavigate } from "react-router-dom"
-
+import convertSecondsToDuration from '../../../../utils/secToDurationFrontend'
 import { formatDate } from "../../../../services/formatDate"
 import {
   deleteCourse,
   fetchInstructorCourses,
 } from "../../../../services/operations/courseDetailsAPI"
 import { COURSE_STATUS } from "../../../../utils/constants"
-import ConfirmationModal from "../../../Common/ConfirmationModal"
+import ConfirmationModal from "../../../common/ConfirmationModal"
 
-export default function CoursesTable({ courses, setCourses }) {
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
-  const { token } = useSelector((state) => state.auth)
-  const [loading, setLoading] = useState(false)
-  const [confirmationModal, setConfirmationModal] = useState(null)
-  const TRUNCATE_LENGTH = 30
+const CoursesTable = ({courses, setCourses}) => {
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+    const { token } = useSelector((state) => state.auth)
+    const [loading, setLoading] = useState(false)
+    const [confirmationModal, setConfirmationModal] = useState(null)
+    const TRUNCATE_LENGTH = 30
 
-  const handleCourseDelete = async (courseId) => {
-    setLoading(true)
-    await deleteCourse({ courseId: courseId }, token)
-    const result = await fetchInstructorCourses(token)
-    if (result) {
-      setCourses(result)
-    }
-    setConfirmationModal(null)
-    setLoading(false)
-  }
-
-  // console.log("All Course ", courses)
-  
-  if(loading) {
-    return (
-        <div className="custom-loader"></div>
-    )
+    const handleCourseDelete = async (courseId)=> {
+        setLoading(true);
+        await deleteCourse({courseId:courseId}, token)
+        const result = await fetchInstructorCourses(token)
+        // console.log("Incourse table result is", result)
+        if (result) {
+            setCourses(result)
+        }
+        setConfirmationModal(null);
+        setLoading(false)
     }
 
 
+    function getDuration(course) {
+      let totalDurationInSeconds = 0
+      course.courseContent.forEach((content) => {
+      content.subSection.forEach((subSection) => {
+        const timeDurationInSeconds = parseInt(subSection.timeDuration)
+        totalDurationInSeconds += timeDurationInSeconds
+      })
+    })
+    const totalDuration = convertSecondsToDuration(totalDurationInSeconds)
+    return totalDuration
+    }
+    
   return (
     <>
       <Table className="rounded-xl border border-richblack-800 ">
@@ -70,7 +76,7 @@ export default function CoursesTable({ courses, setCourses }) {
             <Tr>
               <Td className="py-10 text-center text-2xl font-medium text-richblack-100">
                 No courses found
-                {/* TO DO: Need to change this state */}
+                {/* TODO: Need to change this state */}
               </Td>
             </Tr>
           ) : (
@@ -79,18 +85,18 @@ export default function CoursesTable({ courses, setCourses }) {
                 key={course._id}
                 className="flex gap-x-10 border-b border-richblack-800 px-6 py-8"
               >
-                <Td colSpan={1} className="flex flex-1 gap-x-4">
+                <Td className="flex flex-1 gap-x-4">
                   <img
                     src={course?.thumbnail}
                     alt={course?.courseName}
-                    className="md:h-[148px] md:w-[220px] aspect-video rounded-lg object-cover"
+                    className="h-[148px] w-[220px] rounded-lg object-cover"
                   />
                   <div className="flex flex-col justify-between">
                     <p className="text-lg font-semibold text-richblack-5">
                       {course.courseName}
                     </p>
                     <p className="text-xs text-richblack-300">
-                      {course?.courseDescription.split(" ")?.length >
+                      {course.description.split(" ").length >
                       TRUNCATE_LENGTH
                         ? course.courseDescription
                             .split(" ")
@@ -116,10 +122,10 @@ export default function CoursesTable({ courses, setCourses }) {
                     )}
                   </div>
                 </Td>
-                {/* <Td className="text-sm font-medium text-richblack-100">
-                  2hr 30min
-                </Td> */}
-                <Td className="text-sm font-medium text-richblack-100 mb-5">
+                <Td className="text-sm font-medium text-richblack-100">
+                  {getDuration(course)}
+                </Td>
+                <Td className="text-sm font-medium text-richblack-100">
                   ₹{course.price}
                 </Td>
                 <Td className="text-sm font-medium text-richblack-100 ">
@@ -165,3 +171,5 @@ export default function CoursesTable({ courses, setCourses }) {
     </>
   )
 }
+
+export default CoursesTable
