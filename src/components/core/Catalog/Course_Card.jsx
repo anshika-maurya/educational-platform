@@ -14,19 +14,19 @@ const Course_Card = ({course, Height}) => {
 
   return (
     <div className=' mb-4 hover:scale-[1.03] transition-all duration-200 z-50 '>
-      <Link to={`/courses/${course._id}`}>
+      <Link to={`/courses/${course?._id}`}>
         <div>
           <div className="rounded-lg">
             <img
               src={course?.thumbnail}
-              alt="course thumnail"
+              alt="course thumbnail"
               className={`${Height} w-full rounded-xl object-cover `}
             />
           </div>
           <div className="flex flex-col gap-2 px-1 py-3">
             <p className="text-sm md:text-xl text-richblack-5">{course?.courseName}</p>
             <p className="text-[12px] md:text-xl text-richblack-50">By 
-            {course?.instructor?.firstName} {course?.instructor?.lastName}
+            {course?.instructor?.firstName}{" "} {course?.instructor?.lastName}
               
             </p>
             <div className="flex items-center gap-2">
