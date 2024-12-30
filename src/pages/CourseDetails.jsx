@@ -68,7 +68,7 @@ const CourseDetails = () => {
 
     const handleBuyCourse = () => {
         if (token) {
-            BuyCourse(token, [courseId], user, navigate,dispatch);
+            BuyCourse(token, [courseId], user, navigate, dispatch);
             return;
         }
         setConfirmationModal({
@@ -109,7 +109,7 @@ const CourseDetails = () => {
         instructor,
         studentsEnrolled,
         createdAt,
-    } = courseData?.data?.courseDetails;
+    } = courseData.data?.courseDetails;
   return (
     <>
         {/* Details and Course Buy Card */}
@@ -195,7 +195,7 @@ const CourseDetails = () => {
                                         {totalNoOfLectures} lectures
                                     </span>
                                     <span>
-                                        {courseData?.data?.totalDuration} total length
+                                        {courseData.data?.totalDuration} total length
                                     </span>
                                 </div>
                                 <div>
