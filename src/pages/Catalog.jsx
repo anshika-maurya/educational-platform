@@ -2,8 +2,7 @@ import React, { useEffect, useState } from "react"
 import { useSelector } from "react-redux"
 import { useParams } from "react-router-dom"
 
-// import CourseCard from "../components/Catalog/CourseCard"
-// import CourseSlider from "../components/Catalog/CourseSlider"
+
 import Footer from "../components/Common/Footer"
 import Course_Card from "../components/core/Catalog/Course_Card"
 import Course_Slider from "../components/core/Catalog/Course_Slider"
@@ -17,7 +16,7 @@ function Catalog() {
   const { catalogName } = useParams()
   const [active, setActive] = useState(1)
   const [catalogPageData, setCatalogPageData] = useState(null)
-  const [categoryId, setCategoryId] = useState("")
+  const [categoryId, setCategoryId] = useState(" ")
   // Fetch All Categories
   useEffect(() => {
     ;(async () => {
@@ -88,7 +87,7 @@ function Catalog() {
             } cursor-pointer`}
             onClick={() => setActive(1)}
           >
-            Most Populer
+            Most Popular
           </p>
           <p
             className={`px-4 py-2 ${
@@ -127,7 +126,7 @@ function Catalog() {
             {catalogPageData?.data?.mostSellingCourses
               ?.slice(0, 4)
               .map((course, i) => (
-                <Course_Card course={course} key={i} Height={"h-[400px]"} />
+                <Course_Card courses={course} key={i} Height={"h-[400px]"} />
               ))}
           </div>
         </div>
