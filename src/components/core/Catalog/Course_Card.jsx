@@ -14,7 +14,7 @@ const Course_Card = ({course, Height}) => {
 
   return (
     <div className=' mb-4 hover:scale-[1.03] transition-all duration-200 z-50 '>
-      <Link to={`/courses/${course?._id}`}>
+      <Link to={`/courses/${course._id}`}>
         <div>
           <div className="rounded-lg">
             <img
