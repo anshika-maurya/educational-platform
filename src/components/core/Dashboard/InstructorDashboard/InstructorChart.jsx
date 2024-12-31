@@ -1,75 +1,92 @@
 import React from 'react'
-import { Pie,Doughnut } from 'react-chartjs-2';
-import { useState } from 'react';
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+import { useState } from "react"
 
-const DashboardChart = ({details,currentChart}) => {
-    ChartJS.register(ArcElement, Tooltip, Legend);
+import { Pie } from "react-chartjs-2"
+import {ArcElement,Chart} from 'chart.js'
+
+Chart.register(ArcElement)
 
 
-    const randomColor = (num) => {
-        const colors = []
-        for(let i=0; i<num; i++) {
-            colors.push(`rgba(${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)})`)
-        }
-        return colors;
+const InstructorChart = ({courses}) => {
+  // State to keep track of the currently selected chart
+  const [currChart, setCurrChart] = useState("students")
+
+  // Function to generate random colors for the chart
+  const generateRandomColors = (numColors) => {
+    const colors = []
+    for (let i = 0; i < numColors; i++) {
+      const color = `rgb(${Math.floor(Math.random() * 256)}, ${Math.floor(
+        Math.random() * 256
+      )}, ${Math.floor(Math.random() * 256)})`
+      colors.push(color)
     }
+    return colors
+  }
 
-    const StudentsData = {
-        labels: details?.map(course => course?.courseName),
-        datasets: [
-            {
-                label: '# of Students',
-                data: details?.map(course => course?.totalStudents),
-                backgroundColor: randomColor(details?.length),
-                borderColor: randomColor(),
-                borderWidth: 1,
-            },
-        ],
-    };
+  // Data for the chart displaying student information
+  const chartDataStudents = {
+    labels: courses.map((course) => course.courseName),
+    datasets: [
+      {
+        data: courses.map((course) => course.totalStudentsEnrolled),
+        backgroundColor: generateRandomColors(courses.length),
+      },
+    ],
+  }
+  // console.log("chartDataStudents", chartDataStudents)
 
-    const RevenueData = {
-        labels: details?.map(course => course?.courseName),
-        datasets: [
-            {
-                label: '# of ₹',
-                data: details?.map(course => course?.totalRevenue),
-                backgroundColor: randomColor(details?.length),
-                borderColor: randomColor(),
-                borderWidth: 1,
-            },
-        ],
-    };
-
+  // Data for the chart displaying income information
+  const chartIncomeData = {
+    labels: courses.map((course) => course.courseName),
+    datasets: [
+      {
+        data: courses.map((course) => course.totalAmountGenerated),
+        backgroundColor: generateRandomColors(courses.length),
+      },
+    ],
+  }
+  // console.log("chartIncomeData",chartIncomeData)
+  // Options for the chart
+  const options = {
+    maintainAspectRatio: false,
+  }
 
   return (
-    <div>
-            <div className='mt-8 '> 
-            {/* change label position extreme right and increase gap and change chart size */}
-                {currentChart === 'revenue' ? <Pie data={RevenueData}
-                options={{
-                    plugins: {
-                        legend: {
-                            position: 'right',
-                            labels: {
-                                boxWidth: 10,
-                                boxHeight: 10,
-                                padding: 20,
-                                font: {
-                                    size: 12,
-                                },
-                            },
-                        },
-                    },
-                    aspectRatio: 2,
-                }
-            }
-
-                 /> : <Pie data={StudentsData} />}
-                </div>
-
+    <div className="flex flex-1 flex-col gap-y-4 rounded-md bg-richblack-800 p-6">
+      <p className="text-lg font-bold text-richblack-5">Visualize</p>
+      <div className="space-x-4 font-semibold">
+        {/* Button to switch to the "students" chart */}
+        <button
+          onClick={() => setCurrChart("students")}
+          className={`rounded-sm p-1 px-3 transition-all duration-200 ${
+            currChart === "students"
+              ? "bg-richblack-700 text-yellow-50"
+              : "text-yellow-400"
+          }`}
+        >
+          Students
+        </button>
+        {/* Button to switch to the "income" chart */}
+        <button
+          onClick={() => setCurrChart("income")}
+          className={`rounded-sm p-1 px-3 transition-all duration-200 ${
+            currChart === "income"
+              ? "bg-richblack-700 text-yellow-50"
+              : "text-yellow-400"
+          }`}
+        >
+          Income
+        </button>
+      </div>
+      <div className="relative mx-auto aspect-square h-full w-full">
+        {/* Render the Pie chart based on the selected chart */}
+        <Pie
+          data={currChart === "students" ? chartDataStudents : chartIncomeData}
+          options={options}
+        />
+      </div>
     </div>
   )
 }
 
-export default DashboardChart
+export default InstructorChart
