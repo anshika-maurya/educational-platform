@@ -11,7 +11,7 @@ import AddCourse from "./components/core/Dashboard/AddCourse";
 import Cart from "./components/core/Dashboard/Cart";
 import EditCourse from "./components/core/Dashboard/EditCourse";
 import EnrolledCourses from "./components/core/Dashboard/EnrolledCourses";
-import Instructor from "./components/core/Dashboard/Instructor";
+import Instructor from "./components/core/Dashboard/InstructorDashboard/Instructor";
 import MyCourses from "./components/core/Dashboard/MyCourses";
 import MyProfile from "./components/core/Dashboard/MyProfile";
 import Settings from "./components/core/Dashboard/Settings";
