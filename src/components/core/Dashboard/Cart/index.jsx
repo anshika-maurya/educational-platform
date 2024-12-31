@@ -7,12 +7,12 @@ export default function Cart() {
   const { total, totalItems } = useSelector((state) => state.cart)
   const { paymentLoading } = useSelector((state) => state.course)
 
-  if (paymentLoading)
-    return (
-      <div className="flex h-screen items-center justify-center">
-        <div className="spinner"></div>
-      </div>
-    )
+  // if (paymentLoading)
+  //   return (
+  //     <div className="flex h-screen items-center justify-center">
+  //       <div className="spinner"></div>
+  //     </div>
+  //   )
 
   return (
     <>
