@@ -1,7 +1,7 @@
 import React from 'react'
 import { useState } from "react"
 
-import { Doughnut } from 'react-chartjs-2'
+import { Pie } from "react-chartjs-2"
 import {ArcElement,Chart} from 'chart.js'
 
 Chart.register(ArcElement)
@@ -80,7 +80,7 @@ const InstructorChart = ({courses}) => {
       </div>
       <div className="relative mx-auto aspect-square h-full w-full">
         {/* Render the Pie chart based on the selected chart */}
-        <Doughnut
+        <Pie
           data={currChart === "students" ? chartDataStudents : chartIncomeData}
           options={options}
         />

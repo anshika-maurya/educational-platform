@@ -101,7 +101,7 @@ export const HomePageExplore = [
                 lessionNumber : 6
             },
             {
-                heading : "Next.js",
+                heading : "Nuxt.js",
                 description : "This course explores advanced topics in HTML5 and CSS3, including animations, transitions, and layout techniques",
                 level : 'Beginner',
                 lessionNumber : 6
