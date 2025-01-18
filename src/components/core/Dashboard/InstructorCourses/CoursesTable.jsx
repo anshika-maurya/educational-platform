@@ -1,3 +1,4 @@
+import React from 'react'
 import { useDispatch, useSelector } from "react-redux"
 import { Table, Tbody, Td, Th, Thead, Tr } from "react-super-responsive-table"
 
@@ -9,36 +10,48 @@ import { FiEdit2 } from "react-icons/fi"
 import { HiClock } from "react-icons/hi"
 import { RiDeleteBin6Line } from "react-icons/ri"
 import { useNavigate } from "react-router-dom"
-
+import convertSecondsToDuration from '../../../../utils/secToDurationFrontend'
 import { formatDate } from "../../../../services/formatDate"
 import {
   deleteCourse,
   fetchInstructorCourses,
 } from "../../../../services/operations/courseDetailsAPI"
 import { COURSE_STATUS } from "../../../../utils/constants"
-import ConfirmationModal from "../../../Common/ConfirmationModal"
+import ConfirmationModal from "../../../common/ConfirmationModal"
 
-export default function CoursesTable({ courses, setCourses }) {
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
-  const { token } = useSelector((state) => state.auth)
-  const [loading, setLoading] = useState(false)
-  const [confirmationModal, setConfirmationModal] = useState(null)
-  const TRUNCATE_LENGTH = 30
+const CoursesTable = ({courses, setCourses}) => {
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+    const { token } = useSelector((state) => state.auth)
+    const [loading, setLoading] = useState(false)
+    const [confirmationModal, setConfirmationModal] = useState(null)
+    const TRUNCATE_LENGTH = 30
 
-  const handleCourseDelete = async (courseId) => {
-    setLoading(true)
-    await deleteCourse({ courseId: courseId }, token)
-    const result = await fetchInstructorCourses(token)
-    if (result) {
-      setCourses(result)
+    const handleCourseDelete = async (courseId)=> {
+        setLoading(true);
+        await deleteCourse({courseId:courseId}, token)
+        const result = await fetchInstructorCourses(token)
+        // console.log("Incourse table result is", result)
+        if (result) {
+            setCourses(result)
+        }
+        setConfirmationModal(null);
+        setLoading(false)
     }
-    setConfirmationModal(null)
-    setLoading(false)
-  }
 
-  // console.log("All Course ", courses)
 
+    function getDuration(course) {
+      let totalDurationInSeconds = 0
+      course.courseContent.forEach((content) => {
+      content.subSection.forEach((subSection) => {
+        const timeDurationInSeconds = parseInt(subSection.timeDuration)
+        totalDurationInSeconds += timeDurationInSeconds
+      })
+    })
+    const totalDuration = convertSecondsToDuration(totalDurationInSeconds)
+    return totalDuration
+    }
+    
   return (
     <>
       <Table className="rounded-xl border border-richblack-800 ">
@@ -63,7 +76,7 @@ export default function CoursesTable({ courses, setCourses }) {
             <Tr>
               <Td className="py-10 text-center text-2xl font-medium text-richblack-100">
                 No courses found
-                {/* TO DO: Need to change this state */}
+                {/* TODO: Need to change this state */}
               </Td>
             </Tr>
           ) : (
@@ -83,7 +96,7 @@ export default function CoursesTable({ courses, setCourses }) {
                       {course.courseName}
                     </p>
                     <p className="text-xs text-richblack-300">
-                      {course.courseDescription.split(" ").length >
+                      {course.description.split(" ").length >
                       TRUNCATE_LENGTH
                         ? course.courseDescription
                             .split(" ")
@@ -110,7 +123,7 @@ export default function CoursesTable({ courses, setCourses }) {
                   </div>
                 </Td>
                 <Td className="text-sm font-medium text-richblack-100">
-                  2hr 30min
+                  {getDuration(course)}
                 </Td>
                 <Td className="text-sm font-medium text-richblack-100">
                   ₹{course.price}
@@ -158,3 +171,5 @@ export default function CoursesTable({ courses, setCourses }) {
     </>
   )
 }
+
+export default CoursesTable
