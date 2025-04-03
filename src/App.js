@@ -4,11 +4,11 @@ import picture from "../src/assets/Images/Profile2.png";
 import "./App.css";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import Navbar from "./components/Common/Navbar";
+import Navbar from "./components/common/Navbar";
 import OpenRoute from "./components/core/Auth/OpenRoute";
 import PrivateRoute from "./components/core/Auth/PrivateRoute";
 import AddCourse from "./components/core/Dashboard/AddCourse";
-import Cart from "./components/core/Dashboard/Cart";
+import Cart from "./components/core/Dashboard/Cart"
 import EditCourse from "./components/core/Dashboard/EditCourse";
 import EnrolledCourses from "./components/core/Dashboard/EnrolledCourses";
 import Instructor from "./components/core/Dashboard/InstructorDashboard/Instructor";
