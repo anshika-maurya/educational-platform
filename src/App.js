@@ -2,13 +2,13 @@ import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import picture from "../src/assets/Images/Profile2.png";
 import "./App.css";
-import { Route, Routes, useNavigate } from "react-router-dom";
+import { Route, Routes, useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Navbar from "./components/common/Navbar";
 import OpenRoute from "./components/core/Auth/OpenRoute";
 import PrivateRoute from "./components/core/Auth/PrivateRoute";
 import AddCourse from "./components/core/Dashboard/AddCourse";
-import Cart from "./components/core/Dashboard/Cart"
+import Cart from "./components/core/Dashboard/Cart";
 import EditCourse from "./components/core/Dashboard/EditCourse";
 import EnrolledCourses from "./components/core/Dashboard/EnrolledCourses";
 import Instructor from "./components/core/Dashboard/InstructorDashboard/Instructor";
@@ -35,6 +35,7 @@ import { ACCOUNT_TYPE } from "./utils/constants";
 function App() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
   const { user } = useSelector((state) => state.profile);
 
   const [toastStatus, setToastStatus] = useState(true);
@@ -47,12 +48,10 @@ function App() {
   }, [dispatch, navigate]);
 
   useEffect(() => {
-    if (toastStatus) {
+    if (location.pathname === "/" && toastStatus) {
       toast.custom(
         (t) => (
-          <div
-            className="max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5"
-          >
+          <div className="max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5">
             <div className="flex-1 w-0 p-4">
               <div className="flex items-start">
                 <div className="flex-shrink-0 pt-0.5">
@@ -73,7 +72,7 @@ function App() {
       );
       setToastStatus(false);
     }
-  }, [toastStatus]);
+  }, [location.pathname, toastStatus]);
 
   return (
     <div className="flex min-h-screen w-screen flex-col bg-richblack-900 font-inter">
@@ -85,7 +84,7 @@ function App() {
         <Route path="courses/:courseId" element={<CourseDetails />} />
         <Route path="catalog/:catalogName" element={<Catalog />} />
 
-        {/* Open Route - for Only Non Logged in User */}
+        {/* Open Routes */}
         <Route
           path="login"
           element={
@@ -127,7 +126,7 @@ function App() {
           }
         />
 
-        {/* Private Route - for Only Logged in User */}
+        {/* Private Routes */}
         <Route
           element={
             <PrivateRoute>
@@ -153,7 +152,7 @@ function App() {
           )}
         </Route>
 
-        {/* For the watching course lectures */}
+        {/* Watching lectures */}
         <Route
           element={
             <PrivateRoute>
@@ -169,7 +168,7 @@ function App() {
           )}
         </Route>
 
-        {/* 404 Page */}
+        {/* 404 */}
         <Route path="*" element={<Error />} />
       </Routes>
     </div>
