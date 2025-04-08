@@ -130,8 +130,10 @@ const CourseDetails = () => {
                         <div className='text-md flex flex-wrap items-center gap-2'>
                             <span className='text-yellow-25'>{avgReviewCount}</span>
                             <RatingStars Review_Count={avgReviewCount} Star_Size={24} />
-                            <span>{`(${ratingAndReviews.length} reviews) `}</span>
-                            <span>{`(${studentsEnrolled.length} students enrolled)`}</span>
+                            <span>{`(${ratingAndReviews?.length ?? 0} reviews)`}</span>
+
+                            <span>{`(${studentsEnrolled?.length ?? 0} students enrolled)`}</span>
+
                         </div>
 
                         <div>
@@ -222,7 +224,8 @@ const CourseDetails = () => {
                                             </div>
 
                                             <div className=' space-x-4'>
-                                                <span className=' text-yellow-25'> {`${section.subSection.length} lecture(s)`} </span>
+                                            <span className=' text-yellow-25'> {`${section.subSection?.length ?? 0} lecture(s)`} </span>
+
                                             </div>
                                         </div>
                                     </div>
