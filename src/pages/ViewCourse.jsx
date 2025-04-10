@@ -16,47 +16,23 @@ export default function ViewCourse() {
   const { courseId } = useParams()
   const { token } = useSelector((state) => state.auth)
   const dispatch = useDispatch()
-
   const [reviewModal, setReviewModal] = useState(false)
-  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     ;(async () => {
-      try {
-        const courseData = await getFullDetailsOfCourse(courseId, token)
-
-        const courseDetails = courseData?.courseDetails
-        const courseContent = courseDetails?.courseContent
-
-        if (!courseDetails || !courseContent) {
-          console.error("Invalid course data received:", courseData)
-          return
-        }
-
-        dispatch(setCourseSectionData(courseContent))
-        dispatch(setEntireCourseData(courseDetails))
-        dispatch(setCompletedLectures(courseData.completedVideos || []))
-
-        let lectures = 0
-        courseContent.forEach((sec) => {
-          lectures += sec?.subSection?.length || 0
-        })
-        dispatch(setTotalNoOfLectures(lectures))
-      } catch (error) {
-        console.error("Error fetching course details:", error)
-      } finally {
-        setLoading(false)
-      }
+      const courseData = await getFullDetailsOfCourse(courseId, token)
+      // console.log("Course Data here... ", courseData.courseDetails)
+      dispatch(setCourseSectionData(courseData.courseDetails.courseContent))
+      dispatch(setEntireCourseData(courseData.courseDetails))
+      dispatch(setCompletedLectures(courseData.completedVideos))
+      let lectures = 0
+      courseData?.courseDetails?.courseContent?.forEach((sec) => {
+        lectures += sec.subSection.length
+      })
+      dispatch(setTotalNoOfLectures(lectures))
     })()
-  }, [courseId, token, dispatch])
-
-  if (loading) {
-    return (
-      <div className="text-white text-center mt-10 text-lg font-semibold">
-        Loading Course...
-      </div>
-    )
-  }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <>
