@@ -1,6 +1,4 @@
-import React, { useEffect, useState } from "react";
-import toast from "react-hot-toast";
-import picture from "../src/assets/Images/Profile2.png";
+import React, { useEffect } from "react";
 import "./App.css";
 import { Route, Routes, useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -35,10 +33,7 @@ import { ACCOUNT_TYPE } from "./utils/constants";
 function App() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const location = useLocation();
   const { user } = useSelector((state) => state.profile);
-
-  const [toastStatus, setToastStatus] = useState(true);
 
   useEffect(() => {
     const token = localStorage.getItem("token") ? JSON.parse(localStorage.getItem("token")) : null;
@@ -46,33 +41,6 @@ function App() {
       dispatch(getUserDetails(token, navigate));
     }
   }, [dispatch, navigate]);
-
-  useEffect(() => {
-    if (location.pathname === "/" && toastStatus) {
-      toast.custom(
-        (t) => (
-          <div className="max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5">
-            <div className="flex-1 w-0 p-4">
-              <div className="flex items-start">
-                <div className="flex-shrink-0 pt-0.5">
-                  <img className="h-10 w-10 rounded-full" src={picture} alt="" />
-                </div>
-                <div className="ml-3 flex-1">
-                  <p className="text-sm font-medium text-gray-900">Anshika Maurya</p>
-                  <p className="mt-1 text-sm text-gray-500">
-                    Actually, Backend server is using free hosting service which may require 8-10 sec to warm-up initially,
-                    sorry for the inconvenience.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        ),
-        { duration: 4000 }
-      );
-      setToastStatus(false);
-    }
-  }, [location.pathname, toastStatus]);
 
   return (
     <div className="flex min-h-screen w-screen flex-col bg-richblack-900 font-inter">
