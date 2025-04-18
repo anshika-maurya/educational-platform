@@ -42,8 +42,6 @@ export const getAllCourses = async () => {
 }
 
 export const fetchCourseDetails = async (courseId) => {
-  const toastId = toast.loading("Loading...")
-  //   dispatch(setLoading(true));
   let result = null
   try {
     const response = await apiConnector("POST", COURSE_DETAILS_API, {
@@ -57,11 +55,8 @@ export const fetchCourseDetails = async (courseId) => {
     result = response.data
   } catch (error) {
     console.log("COURSE_DETAILS_API API ERROR............", error)
-    result = error.response.data
-    // toast.error(error.response.data.message);
+    result = error.response?.data || { success: false, message: "An error occurred" }
   }
-  toast.dismiss(toastId)
-  //   dispatch(setLoading(false));
   return result
 }
 
@@ -276,15 +271,23 @@ export const fetchInstructorCourses = async (token) => {
       }
     )
     console.log("INSTRUCTOR COURSES API RESPONSE............", response)
-    if (!response?.data?.success) {
-      throw new Error("Could Not Fetch Instructor Courses")
+    
+    // Check if response is valid and data is an array
+    if (response?.data?.success && Array.isArray(response?.data?.data)) {
+      result = response.data.data
+    } else {
+      console.log("Invalid instructor courses data format:", response?.data)
+      if (!response?.data?.success) {
+        throw new Error(response?.data?.message || "Could Not Fetch Instructor Courses")
+      }
     }
-    result = response?.data?.data
   } catch (error) {
     console.log("INSTRUCTOR COURSES API ERROR............", error)
-    toast.error(error.message)
+    console.log("Error details:", error.response || error.message || error)
+    toast.error(error.message || "Failed to fetch courses")
+  } finally {
+    toast.dismiss(toastId)
   }
-  toast.dismiss(toastId)
   return result
 }
 

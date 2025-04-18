@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import copy from 'copy-to-clipboard'
@@ -13,13 +13,37 @@ const CourseDetailsCard = ({ course, setConfirmationModal, handleBuyCourse }) =>
   const { token } = useSelector((state) => state.auth)
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  
+  const [isProcessing, setIsProcessing] = useState(false)
 
   const {
     thumbnail: ThumbnailImage,
     price: CurrentPrice,
     studentsEnrolled = [],
-    instructions = '[]',
+    studentsEnroled = [],
+    instructions = '',
   } = course || {}
+  
+  const enrolledStudents = studentsEnrolled?.length ? studentsEnrolled : studentsEnroled;
+
+  // Safely parse instructions if it's a string, otherwise use as is
+  const parseInstructions = () => {
+    if (!instructions) return []
+    
+    try {
+      // If it's already an array, return it
+      if (Array.isArray(instructions)) return instructions
+      
+      // Try to parse as JSON
+      return JSON.parse(instructions)
+    } catch (error) {
+      // If parsing fails, it might be a string, so return it as a single-item array
+      console.log("Instructions parse error:", error)
+      return [instructions]
+    }
+  }
+  
+  const parsedInstructions = parseInstructions()
 
   const handleAddToCart = () => {
     if (user?.accountType === ACCOUNT_TYPE.INSTRUCTOR) {
@@ -29,6 +53,7 @@ const CourseDetailsCard = ({ course, setConfirmationModal, handleBuyCourse }) =>
 
     if (token) {
       dispatch(addToCart(course))
+      toast.success("Added to cart")
       return
     }
 
@@ -41,13 +66,43 @@ const CourseDetailsCard = ({ course, setConfirmationModal, handleBuyCourse }) =>
       btn2Handler: () => setConfirmationModal(null),
     })
   }
+  
+  const handleBuyCourseClick = async () => {
+    if (isProcessing) return
+    
+    if (user?.accountType === ACCOUNT_TYPE.INSTRUCTOR) {
+      toast.error("Instructors cannot purchase courses")
+      return
+    }
+    
+    if (!token) {
+      setConfirmationModal({
+        text1: "You are not logged in",
+        text2: "Please login to purchase the course",
+        btn1text: "Login",
+        btn2Text: "Cancel",
+        btn1Handler: () => navigate("/login"),
+        btn2Handler: () => setConfirmationModal(null),
+      })
+      return
+    }
+    
+    setIsProcessing(true)
+    try {
+      await handleBuyCourse()
+    } catch (error) {
+      console.log("Error buying course:", error)
+    } finally {
+      setIsProcessing(false)
+    }
+  }
 
   const handleShare = () => {
     copy(window.location.href)
     toast.success("Link copied to clipboard")
   }
 
-  const isEnrolled = user && studentsEnrolled.includes(user._id)
+  const isEnrolled = user && enrolledStudents?.includes(user._id)
 
   return (
     <div className='flex flex-col gap-4 rounded-md bg-richblack-700 p-4 text-richblack-5'>
@@ -63,8 +118,16 @@ const CourseDetailsCard = ({ course, setConfirmationModal, handleBuyCourse }) =>
         </div>
 
         <div className='flex flex-col gap-y-6'>
-          <button className='yellowButton' onClick={isEnrolled ? () => navigate("/dashboard/enrolled-courses") : handleBuyCourse}>
-            {isEnrolled ? "Go to Course" : "Buy Now"}
+          <button 
+            className={`yellowButton ${isProcessing ? 'opacity-75 cursor-not-allowed' : ''}`} 
+            onClick={isEnrolled ? () => navigate("/dashboard/enrolled-courses") : handleBuyCourseClick}
+            disabled={isProcessing}
+          >
+            {isEnrolled 
+              ? "Go to Course" 
+              : isProcessing 
+                ? "Processing..." 
+                : "Buy Now"}
           </button>
 
           {!isEnrolled && (
@@ -81,8 +144,8 @@ const CourseDetailsCard = ({ course, setConfirmationModal, handleBuyCourse }) =>
         <div>
           <p className='my-2 text-xl font-semibold'>This Course Includes:</p>
           <div className='flex flex-col gap-3 text-sm text-caribbeangreen-100'>
-            {Array.isArray(JSON.parse(instructions)) &&
-              JSON.parse(instructions).map((item, index) => (
+            {Array.isArray(parsedInstructions) &&
+              parsedInstructions.map((item, index) => (
                 <p key={index} className='flex gap-2'>
                   <BiSolidRightArrow />
                   <span>{item}</span>

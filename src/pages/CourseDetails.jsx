@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 import { BuyCourse } from '../services/operations/studentFeaturesAPI.js'
@@ -18,7 +18,7 @@ import Footer from '../components/common/Footer.jsx'
 
 const CourseDetails = () => {
   const { token } = useSelector((state) => state.auth)
-  const { user, loading } = useSelector((state) => state.profile)
+  const { user } = useSelector((state) => state.profile)
   const { courseId } = useParams()
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -28,32 +28,49 @@ const CourseDetails = () => {
   const [avgReviewCount, setAvgReviewCount] = useState(0)
   const [totalNoOfLectures, setTotalNoOfLectures] = useState(0)
   const [isActive, setIsActive] = useState([])
+  const [isLoading, setIsLoading] = useState(true)
+  
+  // Use a ref to track if we've already started loading
+  const isDataFetchedRef = useRef(false)
 
   useEffect(() => {
-    const getCourseFullDetails = async () => {
-      try {
-        const result = await fetchCourseDetails(courseId)
-        setCourseData(result)
-      } catch (error) {
-        toast.error("Could not get course")
-        console.error("Could not fetch course details:", error)
+    // Only fetch data if we haven't already started fetching
+    if (!isDataFetchedRef.current) {
+      isDataFetchedRef.current = true
+      
+      const getCourseFullDetails = async () => {
+        setIsLoading(true)
+        try {
+          const result = await fetchCourseDetails(courseId)
+          if (result) {
+            setCourseData(result)
+          }
+        } catch (error) {
+          console.error("Could not fetch course details:", error)
+        } finally {
+          setIsLoading(false)
+        }
       }
-    }
 
-    getCourseFullDetails()
+      getCourseFullDetails()
+    }
   }, [courseId])
 
   useEffect(() => {
-    const count = GetAvgRating(courseData?.data?.courseDetails?.ratingAndReviews)
-    setAvgReviewCount(count)
+    if (courseData?.data?.courseDetails?.ratingAndReviews) {
+      const count = GetAvgRating(courseData.data.courseDetails.ratingAndReviews)
+      setAvgReviewCount(count)
+    }
   }, [courseData])
 
   useEffect(() => {
-    let lectures = 0
-    courseData?.data?.courseDetails?.courseContent?.forEach((sec) => {
-      lectures += sec?.subSection?.length || 0
-    })
-    setTotalNoOfLectures(lectures)
+    if (courseData?.data?.courseDetails?.courseContent) {
+      let lectures = 0
+      courseData.data.courseDetails.courseContent.forEach((sec) => {
+        lectures += sec?.subSection?.length || 0
+      })
+      setTotalNoOfLectures(lectures)
+    }
   }, [courseData])
 
   const handleActive = (id) => {
@@ -77,11 +94,15 @@ const CourseDetails = () => {
     })
   }
 
-  if (loading || !courseData) {
-    return <div>Loading...</div>
+  if (isLoading) {
+    return (
+      <div className="grid min-h-[calc(100vh-3.5rem)] place-items-center">
+        <div className="spinner"></div>
+      </div>
+    )
   }
 
-  if (!courseData.success) {
+  if (!courseData?.success) {
     return <Error />
   }
 
@@ -95,8 +116,12 @@ const CourseDetails = () => {
     ratingAndReviews,
     instructor,
     studentsEnrolled,
+    studentsEnroled,
     createdAt,
   } = courseData.data?.courseDetails
+  
+  // Use whichever field is available (handle both spellings)
+  const enrolledStudents = studentsEnrolled?.length ? studentsEnrolled : studentsEnroled;
 
   return (
     <>
@@ -118,7 +143,7 @@ const CourseDetails = () => {
                 <span className='text-yellow-25'>{avgReviewCount}</span>
                 <RatingStars Review_Count={avgReviewCount} Star_Size={24} />
                 <span>({ratingAndReviews?.length || 0} reviews)</span>
-                <span>({studentsEnrolled?.length || 0} students enrolled)</span>
+                <span>({enrolledStudents?.length || 0} students enrolled)</span>
               </div>
 
               <div>
