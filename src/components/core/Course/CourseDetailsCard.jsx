@@ -60,7 +60,7 @@ const CourseDetailsCard = ({ course, setConfirmationModal, handleBuyCourse }) =>
     setConfirmationModal({
       text1: "You are not logged in",
       text2: "Please login to add to cart",
-      btn1text: "Login",
+      btn1Text: "Login",
       btn2Text: "Cancel",
       btn1Handler: () => navigate("/login"),
       btn2Handler: () => setConfirmationModal(null),
@@ -79,7 +79,7 @@ const CourseDetailsCard = ({ course, setConfirmationModal, handleBuyCourse }) =>
       setConfirmationModal({
         text1: "You are not logged in",
         text2: "Please login to purchase the course",
-        btn1text: "Login",
+        btn1Text: "Login",
         btn2Text: "Cancel",
         btn1Handler: () => navigate("/login"),
         btn2Handler: () => setConfirmationModal(null),

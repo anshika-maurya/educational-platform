@@ -15,6 +15,7 @@ import { MdOutlineArrowForwardIos } from 'react-icons/md'
 import CourseDetailsCard from '../components/core/Course/CourseDetailsCard'
 import { toast } from 'react-hot-toast'
 import Footer from '../components/common/Footer.jsx'
+import { addToCart } from '../slices/cartSlice'
 
 const CourseDetails = () => {
   const { token } = useSelector((state) => state.auth)
@@ -164,8 +165,43 @@ const CourseDetails = () => {
 
             <div className='flex w-full flex-col gap-4 border-y border-y-richblack-500 py-4 lg:hidden'>
               <p className='space-x-3 pb-4 text-3xl font-semibold text-richblack-5'>Rs. {price}</p>
-              <button className='yellowButton'>Buy Now</button>
-              <button className='blackButton'>Add to Cart</button>
+              <button 
+                className='yellowButton'
+                onClick={
+                  user && (studentsEnrolled?.includes(user?._id) || studentsEnroled?.includes(user?._id))
+                  ? () => navigate("/dashboard/enrolled-courses")
+                  : handleBuyCourse
+                }
+              >
+                {user && (studentsEnrolled?.includes(user?._id) || studentsEnroled?.includes(user?._id))
+                  ? "Go to Course"
+                  : "Buy Now"
+                }
+              </button>
+              <button 
+                className='blackButton'
+                onClick={() => {
+                  if(user?.accountType === "Instructor") {
+                    toast.error("Instructors cannot purchase courses")
+                    return
+                  }
+                  if(token) {
+                    dispatch(addToCart(courseData?.data?.courseDetails))
+                    toast.success("Added to cart")
+                    return
+                  }
+                  setConfirmationModal({
+                    text1: "You are not logged in",
+                    text2: "Please login to add to cart",
+                    btn1Text: "Login",
+                    btn2Text: "Cancel",
+                    btn1Handler: () => navigate("/login"),
+                    btn2Handler: () => setConfirmationModal(null),
+                  })
+                }}
+              >
+                Add to Cart
+              </button>
             </div>
 
           </div>
