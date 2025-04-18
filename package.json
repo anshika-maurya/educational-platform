@@ -10,7 +10,7 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.7.7",
     "chart.js": "^4.4.5",
-    "concurrently": "^9.0.1",
+    "concurrently": "^9.1.2",
     "copy-to-clipboard": "^3.3.3",
     "cors": "^2.8.5",
     "eject": "^0.0.4",
@@ -43,8 +43,8 @@
     "build": "set GENERATE_SOURCEMAP=false && react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "server": "cd server && npm run dev",
-    "dev": "concurrently -n \"client,server\" -c \"bgBlue,bgYellow\" \"npm start\" \"npm run server\""
+    "server": "cd server && nodemon index.js",
+    "dev": "concurrently \"npm start\" \"npm run server\""
   },
   "eslintConfig": {
     "extends": [
