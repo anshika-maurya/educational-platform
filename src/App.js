@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import "./App.css";
 import { Route, Routes, useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import Navbar from "./components/common/Navbar";
+import Navbar from "./components/common/Navbar.jsx";
 import OpenRoute from "./components/core/Auth/OpenRoute";
 import PrivateRoute from "./components/core/Auth/PrivateRoute";
 import AddCourse from "./components/core/Dashboard/AddCourse";
