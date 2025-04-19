@@ -29,8 +29,8 @@ import ViewCourse from "./pages/ViewCourse";
 import { getUserDetails } from "./services/operations/profileAPI";
 import { ACCOUNT_TYPE } from "./utils/constants";
 
-// Lazy load Navbar to help with path resolution
-const Navbar = lazy(() => import("./components/common").then(module => ({ default: module.Navbar })));
+// Lazy load Navbar directly from its file
+const Navbar = lazy(() => import("./components/common/Navbar"));
 
 function App() {
   const dispatch = useDispatch();
