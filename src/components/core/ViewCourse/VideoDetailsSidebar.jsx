@@ -6,7 +6,7 @@ import { useLocation, useNavigate, useParams } from "react-router-dom"
 
 import IconBtn from "../../common/IconBtn"
 
-export default function VideoDetailsSidebar({ setReviewModal }) {
+export default function VideoDetailsSidebar({ setReviewModal, closeSidebar }) {
   const [activeStatus, setActiveStatus] = useState("")
   const [videoBarActive, setVideoBarActive] = useState("")
   const navigate = useNavigate()
@@ -38,9 +38,18 @@ export default function VideoDetailsSidebar({ setReviewModal }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [courseSectionData, courseEntireData, location.pathname])
 
+  const handleSubSectionClick = (courseId, sectionId, subSectionId) => {
+    navigate(`/view-course/${courseId}/section/${sectionId}/sub-section/${subSectionId}`)
+    setVideoBarActive(subSectionId)
+    // Close sidebar on mobile when a subsection is clicked
+    if (closeSidebar) {
+      closeSidebar()
+    }
+  }
+
   return (
     <>
-      <div className="flex h-[calc(100vh-3.5rem)] w-[320px] max-w-[350px] flex-col border-r-[1px] border-r-richblack-700 bg-richblack-800">
+      <div className="flex h-[calc(100vh-3.5rem)] w-full md:w-[320px] md:max-w-[350px] flex-col border-r-[1px] border-r-richblack-700 bg-richblack-800">
         <div className="mx-5 flex flex-col items-start justify-between gap-2 gap-y-4 border-b border-richblack-600 py-5 text-lg font-bold text-richblack-25">
           <div className="flex w-full items-center justify-between ">
             <div
@@ -99,25 +108,25 @@ export default function VideoDetailsSidebar({ setReviewModal }) {
                 <div className="transition-[height] duration-500 ease-in-out">
                   {course.subSection.map((topic, i) => (
                     <div
-                      className={`flex gap-3  px-5 py-2 ${
+                      className={`flex gap-3 px-5 py-3 items-center ${
                         videoBarActive === topic._id
                           ? "bg-yellow-200 font-semibold text-richblack-800"
                           : "hover:bg-richblack-900"
                       } `}
                       key={i}
-                      onClick={() => {
-                        navigate(
-                          `/view-course/${courseEntireData?._id}/section/${course?._id}/sub-section/${topic?._id}`
-                        )
-                        setVideoBarActive(topic._id)
-                      }}
+                      onClick={() => handleSubSectionClick(
+                        courseEntireData?._id,
+                        course?._id,
+                        topic?._id
+                      )}
                     >
                       <input
                         type="checkbox"
                         checked={completedLectures.includes(topic?._id)}
                         onChange={() => {}}
+                        className="h-4 w-4"
                       />
-                      {topic.title}
+                      <span className="ml-2">{topic.title}</span>
                     </div>
                   ))}
                 </div>

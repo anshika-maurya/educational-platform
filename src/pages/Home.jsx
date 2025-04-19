@@ -181,11 +181,16 @@ function Home() {
         {/* Become a instructor section */}
         <InstructorSection />
 
-        {/* Reviws from Other Learner */}
-        <h1 className="text-center text-4xl font-semibold mt-8">
-          Reviews from other learners
-        </h1>
-        <ReviewSlider />
+        {/* Reviews from Other Learner */}
+        <div className="flex flex-col items-center justify-center mx-auto w-full max-w-maxContent mt-8 md:mt-16 mb-8">
+          <h1 className="text-center text-4xl font-bold">
+            What Our <HighlightText text={"Students"} /> Say
+          </h1>
+          <p className="text-center text-richblack-300 text-lg mt-3 mb-8 max-w-[800px]">
+            Discover what learners are saying about their experience with our platform and courses
+          </p>
+          <ReviewSlider />
+        </div>
       </div>
 
       {/* Footer */}

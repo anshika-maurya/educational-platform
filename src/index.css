@@ -16,4 +16,218 @@ code {
     monospace;
 }
 
+/* Custom responsive table styles for mobile */
+@media screen and (max-width: 768px) {
+  .responsiveTable tr {
+    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    border-radius: 0.75rem;
+    overflow: hidden;
+    background-color: #2C333F; /* richblack-700 */
+  }
+  
+  .responsiveTable td {
+    padding: 0.75rem;
+  }
+  
+  .responsiveTable .tdBefore {
+    font-weight: 600;
+    color: #999;
+  }
+
+  /* Add card-like styling for mobile */
+  .responsiveTable tbody tr {
+    transition: all 0.3s ease;
+    border: 1px solid #333;
+  }
+  
+  .responsiveTable tbody tr:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px -10px rgba(0, 0, 0, 0.2);
+  }
+}
+
+/* Video player responsive styles */
+.video-react {
+  width: 100% !important;
+  height: auto !important;
+}
+
+@media screen and (max-width: 768px) {
+  .video-react {
+    max-height: 50vh;
+  }
+  
+  .video-react-control-bar {
+    font-size: 10px;
+  }
+}
+
+/* Review Slider Styles */
+.reviewSlider {
+  padding-bottom: 50px !important;
+}
+
+.reviewSlider .swiper-pagination {
+  bottom: 0 !important;
+}
+
+.reviewSlider .swiper-pagination-bullet {
+  background-color: #FFD700 !important; /* yellow color for bullets */
+  opacity: 0.5;
+}
+
+.reviewSlider .swiper-pagination-bullet-active {
+  background-color: #FFD700 !important;
+  opacity: 1;
+}
+
+.reviewSlider .swiper-button-next,
+.reviewSlider .swiper-button-prev {
+  color: #FFD700 !important;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
+  padding: 20px;
+  width: 40px;
+  height: 40px;
+}
+
+.reviewSlider .swiper-button-next:after,
+.reviewSlider .swiper-button-prev:after {
+  font-size: 20px !important;
+  font-weight: bold;
+}
+
+.reviewSlider .swiper-slide {
+  height: auto;
+  max-width: 400px;
+}
+
+.swiper-slide-review {
+  opacity: 0.7;
+  transform: scale(0.85);
+  transition: all 0.3s ease;
+}
+
+.swiper-slide-active.swiper-slide-review {
+  opacity: 1;
+  transform: scale(1);
+}
+
+@media screen and (max-width: 768px) {
+  .reviewSlider .swiper-button-next,
+  .reviewSlider .swiper-button-prev {
+    display: none;
+  }
+  
+  .reviewSlider {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+}
+
+/* Frequently Bought Slider Styles */
+.frequentlyBoughtSlider {
+  padding-bottom: 60px !important;
+  overflow: hidden !important;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.frequentlyBoughtSlider .swiper-wrapper {
+  padding-top: 20px;
+  padding-bottom: 20px;
+  align-items: center;
+}
+
+.frequentlyBoughtSlider .swiper-slide {
+  height: auto;
+  transition: all 0.5s ease;
+  opacity: 1 !important;
+  transform: scale(1) !important;
+  backface-visibility: hidden;
+  width: calc(33.33% - 20px) !important;
+}
+
+.frequentlyBoughtSlider .swiper-pagination {
+  bottom: 0 !important;
+}
+
+.frequentlyBoughtSlider .swiper-pagination-bullet {
+  background-color: #FFD700 !important; /* yellow color for bullets */
+  opacity: 0.5;
+  width: 10px;
+  height: 10px;
+}
+
+.frequentlyBoughtSlider .swiper-pagination-bullet-active {
+  background-color: #FFD700 !important;
+  opacity: 1;
+  width: 12px;
+  height: 12px;
+}
+
+.frequentlyBoughtSlider .swiper-button-next,
+.frequentlyBoughtSlider .swiper-button-prev {
+  color: #FFD700 !important;
+  background-color: rgba(0, 0, 0, 0.7);
+  border-radius: 50%;
+  padding: 22px;
+  width: 45px;
+  height: 45px;
+  transition: all 0.3s ease;
+}
+
+.frequentlyBoughtSlider .swiper-button-next:hover,
+.frequentlyBoughtSlider .swiper-button-prev:hover {
+  background-color: rgba(0, 0, 0, 0.9);
+  transform: scale(1.1);
+}
+
+.frequentlyBoughtSlider .swiper-button-next:after,
+.frequentlyBoughtSlider .swiper-button-prev:after {
+  font-size: 22px !important;
+  font-weight: bold;
+}
+
+.swiper-slide-course {
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.course-card-container {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  height: 100%;
+}
+
+.course-card-container:hover {
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+}
+
+@media screen and (max-width: 1023px) {
+  .frequentlyBoughtSlider .swiper-slide {
+    width: calc(50% - 20px) !important;
+  }
+}
+
+@media screen and (max-width: 639px) {
+  .frequentlyBoughtSlider .swiper-slide {
+    width: 100% !important;
+  }
+  
+  .frequentlyBoughtSlider .swiper-button-next,
+  .frequentlyBoughtSlider .swiper-button-prev {
+    display: none;
+  }
+  
+  .frequentlyBoughtSlider {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+}
+
 

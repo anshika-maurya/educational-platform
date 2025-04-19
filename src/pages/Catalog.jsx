@@ -6,6 +6,7 @@ import { useParams } from "react-router-dom"
 import Footer from "../components/common/Footer"
 import Course_Card from "../components/core/Catalog/Course_Card"
 import Course_Slider from "../components/core/Catalog/Course_Slider"
+import FrequentlyBoughtSlider from "../components/core/Catalog/FrequentlyBoughtSlider"
 import { apiConnector } from "../services/apiConnector"
 import { categories } from "../services/apis"
 import { getCatalogPageData } from "../services/operations/pageAndComponntDatas"
@@ -119,17 +120,15 @@ function Catalog() {
       </div>
 
       {/* Section 3 */}
-      <div className=" mx-auto box-content w-full max-w-maxContentTab px-4 py-12 lg:max-w-maxContent">
-        <div className="section_heading">Frequently Bought</div>
-        <div className="py-8">
-          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-            {catalogPageData?.data?.mostSellingCourses
-              ?.slice(0, 4)
-              .map((course, i) => (
-                <Course_Card course={course} key={i} Height={"h-[400px]"} />
-              ))}
+      <div className="mx-auto box-content w-full max-w-maxContentTab px-4 py-12 lg:max-w-maxContent">
+        <div className="flex flex-col items-center justify-center mb-8">
+          <div className="section_heading relative mb-2">
+            <span className="absolute -bottom-1 left-0 right-0 mx-auto h-1 w-1/3 bg-yellow-50"></span>
+            Frequently Bought Together
           </div>
+          <p className="text-richblack-300 text-center mt-2 max-w-[600px]">These courses are often purchased together and highly recommended by our students</p>
         </div>
+        <FrequentlyBoughtSlider courses={catalogPageData?.data?.mostSellingCourses?.slice(0, 6)} />
       </div>
 
       <Footer />

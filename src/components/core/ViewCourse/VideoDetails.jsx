@@ -169,7 +169,7 @@ const VideoDetails = () => {
   }
 
   return (
-    <div className="flex flex-col gap-5 text-white">
+    <div className="flex flex-col gap-5 text-white mt-4 md:mt-8">
       {!videoData ? (
         <img
           src={previewSource}
@@ -183,6 +183,7 @@ const VideoDetails = () => {
           playsInline
           onEnded={() => setVideoEnded(true)}
           src={videoData?.videoUrl}
+          className="overflow-hidden rounded-md"
         >
           <BigPlayButton position="center" />
           {/* Render When Video Ends */}
@@ -214,7 +215,7 @@ const VideoDetails = () => {
                 text="Rewatch"
                 customClasses="text-xl max-w-max px-4 mx-auto mt-2"
               />
-              <div className="mt-10 flex min-w-[250px] justify-center gap-x-4 text-xl">
+              <div className="mt-10 flex flex-wrap min-w-[250px] justify-center gap-x-4 gap-y-2 text-xl">
                 {!isFirstVideo() && (
                   <button
                     disabled={loading}
@@ -239,8 +240,8 @@ const VideoDetails = () => {
         </Player>
       )}
 
-      <h1 className="mt-4 text-3xl font-semibold">{videoData?.title}</h1>
-      <p className="pt-2 pb-6">{videoData?.description}</p>
+      <h1 className="mt-4 text-xl md:text-3xl font-semibold">{videoData?.title}</h1>
+      <p className="pt-2 pb-6 text-sm md:text-base">{videoData?.description}</p>
     </div>
   )
 }

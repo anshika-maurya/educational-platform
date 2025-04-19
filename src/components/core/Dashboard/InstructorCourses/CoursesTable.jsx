@@ -41,13 +41,13 @@ export default function CoursesTable({ courses, setCourses }) {
 
   return (
     <>
-      <Table className="rounded-xl border border-richblack-800 ">
+      <Table className="rounded-xl border border-richblack-800">
         <Thead>
           <Tr className="flex gap-x-10 rounded-t-md border-b border-b-richblack-800 px-6 py-2">
             <Th className="flex-1 text-left text-sm font-medium uppercase text-richblack-100">
               Courses
             </Th>
-            <Th className="text-left text-sm font-medium uppercase text-richblack-100">
+            <Th className="hidden md:block text-left text-sm font-medium uppercase text-richblack-100">
               Duration
             </Th>
             <Th className="text-left text-sm font-medium uppercase text-richblack-100">
@@ -70,84 +70,96 @@ export default function CoursesTable({ courses, setCourses }) {
             courses?.map((course) => (
               <Tr
                 key={course._id}
-                className="flex gap-x-10 border-b border-richblack-800 px-6 py-8"
+                className="flex flex-col md:flex-row gap-y-4 md:gap-x-10 border-b border-richblack-800 px-4 md:px-6 py-4 md:py-8"
               >
-                <Td className="flex flex-1 gap-x-4">
-                  <img
-                    src={course?.thumbnail}
-                    alt={course?.courseName}
-                    className="h-[148px] w-[220px] rounded-lg object-cover"
-                  />
-                  <div className="flex flex-col justify-between">
-                    <p className="text-lg font-semibold text-richblack-5">
-                      {course.courseName}
-                    </p>
-                    <p className="text-xs text-richblack-300">
-                      {course.courseDescription.split(" ").length >
-                      TRUNCATE_LENGTH
-                        ? course.courseDescription
-                            .split(" ")
-                            .slice(0, TRUNCATE_LENGTH)
-                            .join(" ") + "..."
-                        : course.courseDescription}
-                    </p>
-                    <p className="text-[12px] text-white">
-                      Created: {formatDate(course.createdAt)}
-                    </p>
+                <Td className="flex flex-col md:flex-row flex-1 gap-y-4 md:gap-x-4">
+                  <div className="w-full md:w-auto relative">
+                    <img
+                      src={course?.thumbnail}
+                      alt={course?.courseName}
+                      className="w-full h-[180px] md:h-[148px] md:w-[220px] rounded-xl object-cover shadow-md border border-richblack-700"
+                    />
                     {course.status === COURSE_STATUS.DRAFT ? (
-                      <p className="flex w-fit flex-row items-center gap-2 rounded-full bg-richblack-700 px-2 py-[2px] text-[12px] font-medium text-pink-100">
-                        <HiClock size={14} />
-                        Drafted
-                      </p>
+                      <div className="absolute top-2 right-2 bg-pink-100 text-richblack-800 rounded-full px-2 py-1 text-xs font-medium flex items-center gap-1">
+                        <HiClock size={12} />
+                        Draft
+                      </div>
                     ) : (
-                      <p className="flex w-fit flex-row items-center gap-2 rounded-full bg-richblack-700 px-2 py-[2px] text-[12px] font-medium text-yellow-100">
-                        <div className="flex h-3 w-3 items-center justify-center rounded-full bg-yellow-100 text-richblack-700">
-                          <FaCheck size={8} />
-                        </div>
+                      <div className="absolute top-2 right-2 bg-yellow-100 text-richblack-800 rounded-full px-2 py-1 text-xs font-medium flex items-center gap-1">
+                        <FaCheck size={10} />
                         Published
-                      </p>
+                      </div>
                     )}
                   </div>
+                  
+                  <div className="flex flex-col justify-between flex-1">
+                    <div>
+                      <p className="text-lg md:text-xl font-semibold text-richblack-5">
+                        {course.courseName}
+                      </p>
+                      <p className="text-xs text-richblack-300 line-clamp-2 md:line-clamp-none mt-1">
+                        {course.courseDescription.split(" ").length >
+                        TRUNCATE_LENGTH
+                          ? course.courseDescription
+                              .split(" ")
+                              .slice(0, TRUNCATE_LENGTH)
+                              .join(" ") + "..."
+                          : course.courseDescription}
+                      </p>
+                    </div>
+                    
+                    <div className="flex flex-wrap items-center gap-4 mt-3">
+                      <p className="text-[12px] text-richblack-300 flex items-center gap-1">
+                        <span className="text-yellow-50">Created:</span> {formatDate(course.createdAt)}
+                      </p>
+                      
+                      <div className="md:hidden flex items-center gap-2 bg-richblack-700 rounded-full px-3 py-1">
+                        <span className="text-sm font-semibold text-yellow-50">₹{course.price}</span>
+                      </div>
+                    </div>
+                  </div>
                 </Td>
-                <Td className="text-sm font-medium text-richblack-100">
+                <Td className="hidden md:table-cell text-sm font-medium text-richblack-100">
                   2hr 30min
                 </Td>
-                <Td className="text-sm font-medium text-richblack-100">
+                <Td className="hidden md:table-cell text-sm font-medium text-richblack-100">
                   ₹{course.price}
                 </Td>
-                <Td className="text-sm font-medium text-richblack-100 ">
-                  <button
-                    disabled={loading}
-                    onClick={() => {
-                      navigate(`/dashboard/edit-course/${course._id}`)
-                    }}
-                    title="Edit"
-                    className="px-2 transition-all duration-200 hover:scale-110 hover:text-caribbeangreen-300"
-                  >
-                    <FiEdit2 size={20} />
-                  </button>
-                  <button
-                    disabled={loading}
-                    onClick={() => {
-                      setConfirmationModal({
-                        text1: "Do you want to delete this course?",
-                        text2:
-                          "All the data related to this course will be deleted",
-                        btn1Text: !loading ? "Delete" : "Loading...  ",
-                        btn2Text: "Cancel",
-                        btn1Handler: !loading
-                          ? () => handleCourseDelete(course._id)
-                          : () => {},
-                        btn2Handler: !loading
-                          ? () => setConfirmationModal(null)
-                          : () => {},
-                      })
-                    }}
-                    title="Delete"
-                    className="px-1 transition-all duration-200 hover:scale-110 hover:text-[#ff0000]"
-                  >
-                    <RiDeleteBin6Line size={20} />
-                  </button>
+                <Td className="text-sm font-medium text-richblack-100">
+                  <div className="flex gap-x-3 items-center justify-center md:justify-start">
+                    <button
+                      disabled={loading}
+                      onClick={() => {
+                        navigate(`/dashboard/edit-course/${course._id}`)
+                      }}
+                      title="Edit"
+                      className="p-2 rounded-md bg-richblack-700 transition-all duration-200 hover:scale-110 hover:text-caribbeangreen-300"
+                    >
+                      <FiEdit2 size={20} />
+                    </button>
+                    <button
+                      disabled={loading}
+                      onClick={() => {
+                        setConfirmationModal({
+                          text1: "Do you want to delete this course?",
+                          text2:
+                            "All the data related to this course will be deleted",
+                          btn1Text: !loading ? "Delete" : "Loading...  ",
+                          btn2Text: "Cancel",
+                          btn1Handler: !loading
+                            ? () => handleCourseDelete(course._id)
+                            : () => {},
+                          btn2Handler: !loading
+                            ? () => setConfirmationModal(null)
+                            : () => {},
+                        })
+                      }}
+                      title="Delete"
+                      className="p-2 rounded-md bg-richblack-700 transition-all duration-200 hover:scale-110 hover:text-[#ff0000]"
+                    >
+                      <RiDeleteBin6Line size={20} />
+                    </button>
+                  </div>
                 </Td>
               </Tr>
             ))
