@@ -1,8 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useEffect, lazy, Suspense } from "react";
 import "./App.css";
 import { Route, Routes, useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import Navbar from "./components/common/Navbar.jsx";
 import OpenRoute from "./components/core/Auth/OpenRoute";
 import PrivateRoute from "./components/core/Auth/PrivateRoute";
 import AddCourse from "./components/core/Dashboard/AddCourse";
@@ -30,6 +29,9 @@ import ViewCourse from "./pages/ViewCourse";
 import { getUserDetails } from "./services/operations/profileAPI";
 import { ACCOUNT_TYPE } from "./utils/constants";
 
+// Lazy load Navbar to help with path resolution
+const Navbar = lazy(() => import("./components/common").then(module => ({ default: module.Navbar })));
+
 function App() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -44,7 +46,9 @@ function App() {
 
   return (
     <div className="flex min-h-screen w-screen flex-col bg-richblack-900 font-inter">
-      <Navbar />
+      <Suspense fallback={<div className="h-14 border-b border-richblack-700"></div>}>
+        <Navbar />
+      </Suspense>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
