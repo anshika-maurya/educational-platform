@@ -100,22 +100,26 @@ function Navbar() {
                       {loading ? (
                         <p className="text-center">Loading...</p>
                       ) : subLinks.length ? (
-                        <>
-                          {subLinks.map((subLink, i) => (
+                        subLinks
+                          ?.filter(
+                            (subLink) =>
+                              Array.isArray(subLink?.courses) &&
+                              subLink.courses.length > 0
+                          )
+                          ?.map((subLink, i) => (
                             <Link
                               to={`/catalog/${subLink.name
                                 .split(" ")
                                 .join("-")
                                 .toLowerCase()}`}
-                              className="rounded-lg bg-transparent py-2 pl-2 hover:bg-richblack-50"
+                              className="rounded-lg bg-transparent py-4 pl-4 hover:bg-richblack-50"
                               key={i}
                             >
                               <p>{subLink.name}</p>
                             </Link>
-                          ))}
-                        </>
+                          ))
                       ) : (
-                        <p className="text-center">No Data Found</p>
+                        <p className="text-center">No Courses Found</p>
                       )}
                     </div>
                   </div>
@@ -137,20 +141,20 @@ function Navbar() {
           </ul>
         </nav>
 
-        {/* Login / Signup / Dashboard / Cart */}
+        {/* Login / Signup / Dashboard */}
         <div className="hidden items-center gap-x-4 md:flex">
           {user && user?.accountType !== ACCOUNT_TYPE.INSTRUCTOR && (
             <Link to="/dashboard/cart" className="relative">
               <AiOutlineShoppingCart className="text-2xl text-richblack-100" />
               {totalItems > 0 && (
-                <span className="absolute -right-2 -top-2 grid h-5 w-5 place-items-center overflow-hidden rounded-full bg-richblack-600 text-center text-xs font-bold text-yellow-100">
+                <span className="absolute -bottom-2 -right-2 grid h-5 w-5 place-items-center overflow-hidden rounded-full bg-richblack-600 text-center text-xs font-bold text-yellow-100">
                   {totalItems}
                 </span>
               )}
             </Link>
           )}
-          {token === null && (
-            <div className="flex gap-x-4 items-center">
+          {token === null ? (
+            <>
               <Link to="/login">
                 <button className="rounded-[8px] border border-richblack-700 bg-richblack-800 px-[12px] py-[8px] text-richblack-100">
                   Log in
@@ -161,21 +165,27 @@ function Navbar() {
                   Sign up
                 </button>
               </Link>
-            </div>
+            </>
+          ) : (
+            <ProfileDropdown />
           )}
-          {token !== null && <ProfileDropdown />}
         </div>
 
-        {/* Mobile Menu Button */}
-        <button
-          className="block md:hidden text-richblack-100"
-          onClick={toggleMobileMenu}
+        {/* Mobile Menu Button - hide on dashboard pages */}
+        <button 
+          className={`block md:hidden ${location.pathname.includes("/dashboard") ? "hidden" : ""}`} 
+          onClick={toggleMobileMenu} 
+          aria-label="Toggle menu"
         >
-          <AiOutlineMenu fontSize={24} />
+          {mobileMenuOpen ? (
+            <AiOutlineClose fontSize={24} fill="#AFB2BF" />
+          ) : (
+            <AiOutlineMenu fontSize={24} fill="#AFB2BF" />
+          )}
         </button>
       </div>
 
-      {/* Mobile Menu Backdrop */}
+      {/* Mobile Menu Overlay */}
       <div 
         className={`fixed inset-0 z-[1000] bg-richblack-900 bg-opacity-60 backdrop-blur-sm transition-opacity duration-300 md:hidden ${
           mobileMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"
@@ -220,31 +230,31 @@ function Navbar() {
                       </div>
                       
                       {/* Mobile Catalog dropdown */}
-                      <div
-                        className={`mt-4 ml-2 transition-all duration-200 overflow-hidden ${
-                          categoryOpen ? "max-h-60" : "max-h-0"
-                        }`}
-                      >
+                      <div className={`mt-4 pl-4 space-y-3 overflow-hidden transition-all duration-300 ${categoryOpen ? "max-h-96" : "max-h-0"}`}>
                         {loading ? (
                           <p className="text-center text-richblack-100">Loading...</p>
                         ) : subLinks.length ? (
-                          <div className="flex flex-col gap-y-3">
-                            {subLinks.map((subLink, i) => (
+                          subLinks
+                            ?.filter(
+                              (subLink) =>
+                                Array.isArray(subLink?.courses) &&
+                                subLink.courses.length > 0
+                            )
+                            ?.map((subLink, i) => (
                               <Link
                                 to={`/catalog/${subLink.name
                                   .split(" ")
                                   .join("-")
                                   .toLowerCase()}`}
-                                className="text-richblack-100 hover:text-yellow-50 transition-colors duration-200"
+                                className="block py-2 text-richblack-100 hover:text-yellow-25 transition-colors"
                                 key={i}
                                 onClick={toggleMobileMenu}
                               >
-                                <p>{subLink.name}</p>
+                                {subLink.name}
                               </Link>
-                            ))}
-                          </div>
+                            ))
                         ) : (
-                          <p className="text-center text-richblack-100">No Data Found</p>
+                          <p className="text-center text-richblack-100">No Courses Found</p>
                         )}
                       </div>
                     </div>
@@ -266,38 +276,67 @@ function Navbar() {
             </ul>
           </nav>
 
-          {/* Mobile Menu Footer */}
-          <div className="mt-8">
+          {/* Mobile Auth Buttons / Cart */}
+          <div className="mt-8 flex flex-col gap-y-4">
+            {token !== null && (
+              <div className="rounded-md overflow-hidden bg-richblack-700">
+                {/* User profile header */}
+                <div 
+                  className="flex items-center gap-x-2 p-3 cursor-pointer"
+                  onClick={() => setProfileDropdownOpen(!profileDropdownOpen)}
+                >
+                  <img
+                    src={user?.image}
+                    alt={`profile-${user?.firstName}`}
+                    className="aspect-square w-[30px] rounded-full object-cover"
+                  />
+                  <div className="flex-1">
+                    <p className="text-sm font-medium text-richblack-50">
+                      {user?.firstName} {user?.lastName}
+                    </p>
+                    <p className="text-xs text-richblack-300">{user?.email}</p>
+                  </div>
+                  <BsChevronDown className={`transition-transform duration-200 ${profileDropdownOpen ? "rotate-180" : ""}`} />
+                </div>
+
+                {/* Dropdown options */}
+                <div className={`overflow-hidden transition-all duration-300 ${profileDropdownOpen ? "max-h-[200px]" : "max-h-0"}`}>
+                  <button 
+                    onClick={goToDashboard}
+                    className="flex items-center gap-x-2 w-full p-3 text-richblack-100 hover:bg-richblack-600 active:bg-richblack-600 border-t border-richblack-600"
+                  >
+                    <VscDashboard className="text-xl" />
+                    <span>Dashboard</span>
+                  </button>
+                  
+                  <button 
+                    onClick={handleLogout}
+                    className="flex items-center gap-x-2 w-full p-3 text-richblack-100 hover:bg-richblack-600 active:bg-richblack-600 border-t border-richblack-600"
+                  >
+                    <VscSignOut className="text-xl" />
+                    <span>Logout</span>
+                  </button>
+                </div>
+              </div>
+            )}
+            
             {user && user?.accountType !== ACCOUNT_TYPE.INSTRUCTOR && (
-              <Link to="/dashboard/cart" className="flex items-center gap-x-2 text-richblack-100 mb-6" onClick={toggleMobileMenu}>
+              <Link 
+                to="/dashboard/cart" 
+                className="flex items-center gap-x-2 text-richblack-100"
+                onClick={toggleMobileMenu}
+              >
                 <AiOutlineShoppingCart className="text-2xl" />
                 <span>Cart</span>
                 {totalItems > 0 && (
-                  <span className="grid h-5 w-5 place-items-center overflow-hidden rounded-full bg-richblack-600 text-center text-xs font-bold text-yellow-100">
+                  <span className="ml-1 grid h-5 w-5 place-items-center overflow-hidden rounded-full bg-richblack-600 text-center text-xs font-bold text-yellow-100">
                     {totalItems}
                   </span>
                 )}
               </Link>
             )}
             
-            {token !== null ? (
-              <div className="flex flex-col gap-y-4">
-                <button 
-                  className="flex items-center gap-x-2 text-richblack-100"
-                  onClick={goToDashboard}
-                >
-                  <VscDashboard className="text-lg" />
-                  Dashboard
-                </button>
-                <button 
-                  className="flex items-center gap-x-2 text-richblack-100"
-                  onClick={handleLogout}
-                >
-                  <VscSignOut className="text-lg" />
-                  Logout
-                </button>
-              </div>
-            ) : (
+            {token === null ? (
               <div className="flex flex-col gap-y-4">
                 <Link to="/login">
                   <button 
@@ -316,7 +355,7 @@ function Navbar() {
                   </button>
                 </Link>
               </div>
-            )}
+            ) : null}
           </div>
         </div>
       </div>
