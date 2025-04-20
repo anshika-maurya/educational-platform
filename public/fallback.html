@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StudyNotion - Loading</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      background-color: #000814;
+      color: #F1F2FF;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+    .container {
+      max-width: 600px;
+      padding: 20px;
+    }
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      color: #FFD60A;
+    }
+    p {
+      font-size: 1.2rem;
+      line-height: 1.6;
+      margin-bottom: 2rem;
+    }
+    .spinner {
+      width: 50px;
+      height: 50px;
+      border: 5px solid rgba(255, 214, 10, 0.3);
+      border-radius: 50%;
+      border-top-color: #FFD60A;
+      animation: spin 1s ease-in-out infinite;
+      margin-bottom: 2rem;
+    }
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+    .button {
+      display: inline-block;
+      background-color: #FFD60A;
+      color: #000814;
+      padding: 10px 20px;
+      font-size: 1rem;
+      font-weight: 600;
+      text-decoration: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .button:hover {
+      background-color: #E6C108;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>StudyNotion</h1>
+    <div class="spinner"></div>
+    <p>The application is loading or temporarily unavailable. Please try refreshing the page in a few moments.</p>
+    <a href="/" class="button">Refresh Page</a>
+  </div>
+  <script>
+    // Auto refresh after 5 seconds
+    setTimeout(() => {
+      window.location.reload();
+    }, 5000);
+  </script>
+</body>
+</html> 

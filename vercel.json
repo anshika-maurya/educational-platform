@@ -4,5 +4,11 @@
   ],
   "buildCommand": "npm run build",
   "outputDirectory": "build",
-  "framework": "create-react-app"
+  "devCommand": "npm start",
+  "framework": "create-react-app",
+  "build": {
+    "env": {
+      "REACT_APP_BASE_URL": "Your_API_URL_Here"
+    }
+  }
 } 
