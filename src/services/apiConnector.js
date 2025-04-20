@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // Use environment variables with fallback for production deployment
-const BASE_URL = process.env.REACT_APP_BASE_URL || "https://server-1-aw2i.onrender.com/api/v1";
+const BASE_URL = process.env.REACT_APP_BASE_URL || "https://server-1-aw2i.onrender.com";
 
 export const axiosInstance = axios.create({
   baseURL: BASE_URL,
