@@ -50,58 +50,50 @@
 ## <div align="center">📸 **Screenshots Gallery** 📸</div>
 
 <div align="center">
-  <!-- Screenshot Carousel Navigation -->
-  <div>
-    <h3>🎬 Interactive Screenshot Carousel</h3>
-    
-    <!-- Carousel Navigation -->
-    <div align="center">
-      <table align="center" border="0">
-        <tr>
-          <td align="center">
-            <a href="#slide1">
-              <img src="https://img.shields.io/badge/Homepage-FF5722?style=for-the-badge&logoColor=white" alt="Slide 1" />
-            </a>
-          </td>
-          <td align="center">
-            <a href="#slide2">
-              <img src="https://img.shields.io/badge/Dashboard-4285F4?style=for-the-badge&logoColor=white" alt="Slide 2" />
-            </a>
-          </td>
-          <td align="center">
-            <a href="#slide3">
-              <img src="https://img.shields.io/badge/Course_Builder-8BC34A?style=for-the-badge&logoColor=white" alt="Slide 3" />
-            </a>
-          </td>
-          <td align="center">
-            <a href="#slide4">
-              <img src="https://img.shields.io/badge/Settings-9C27B0?style=for-the-badge&logoColor=white" alt="Slide 4" />
-            </a>
-          </td>
-        </tr>
-      </table>
-    </div>
-    
-    <!-- Thumbnail Preview Row -->
-    <table align="center" border="0">
-      <tr>
-        <td width="22%" align="center">
-          <a href="#slide1"><img src="./src/assets/Images/Screenshots/1_Homepage.jpeg" width="100%" style="border-radius: 10px;" /></a>
-        </td>
-        <td width="22%" align="center">
-          <a href="#slide2"><img src="./src/assets/Images/Screenshots/11_InstructorDashboard.png" width="100%" style="border-radius: 10px;" /></a>
-        </td>
-        <td width="22%" align="center">
-          <a href="#slide3"><img src="./src/assets/Images/Screenshots/14_Course-builder.png" width="100%" style="border-radius: 10px;" /></a>
-        </td>
-        <td width="22%" align="center">
-          <a href="#slide4"><img src="./src/assets/Images/Screenshots/20_Settings.png" width="100%" style="border-radius: 10px;" /></a>
-        </td>
-      </tr>
-    </table>
-  </div>
+  <h3>🎬 Interactive Screenshot Carousel</h3>
   
-  <!-- Carousel Slides -->
+  <table align="center" border="0">
+    <tr>
+      <td align="center">
+        <a href="#slide1">
+          <img src="https://img.shields.io/badge/Homepage-FF5722?style=for-the-badge&logoColor=white" alt="Slide 1" />
+        </a>
+      </td>
+      <td align="center">
+        <a href="#slide2">
+          <img src="https://img.shields.io/badge/Dashboard-4285F4?style=for-the-badge&logoColor=white" alt="Slide 2" />
+        </a>
+      </td>
+      <td align="center">
+        <a href="#slide3">
+          <img src="https://img.shields.io/badge/Course_Builder-8BC34A?style=for-the-badge&logoColor=white" alt="Slide 3" />
+        </a>
+      </td>
+      <td align="center">
+        <a href="#slide4">
+          <img src="https://img.shields.io/badge/Settings-9C27B0?style=for-the-badge&logoColor=white" alt="Slide 4" />
+        </a>
+      </td>
+    </tr>
+  </table>
+  
+  <table align="center" border="0">
+    <tr>
+      <td width="22%" align="center">
+        <a href="#slide1"><img src="./src/assets/Images/Screenshots/1_Homepage.jpeg" width="100%" style="border-radius: 10px;" /></a>
+      </td>
+      <td width="22%" align="center">
+        <a href="#slide2"><img src="./src/assets/Images/Screenshots/11_InstructorDashboard.png" width="100%" style="border-radius: 10px;" /></a>
+      </td>
+      <td width="22%" align="center">
+        <a href="#slide3"><img src="./src/assets/Images/Screenshots/14_Course-builder.png" width="100%" style="border-radius: 10px;" /></a>
+      </td>
+      <td width="22%" align="center">
+        <a href="#slide4"><img src="./src/assets/Images/Screenshots/20_Settings.png" width="100%" style="border-radius: 10px;" /></a>
+      </td>
+    </tr>
+  </table>
+  
   <div id="slide1">
     <h3>🏠 Homepage</h3>
     <img src="./src/assets/Images/Screenshots/1_Homepage.jpeg" width="80%" style="border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);" />
@@ -131,25 +123,23 @@
   <details>
     <summary><b>🖼️ View Additional Screenshots</b></summary>
     <br>
-    <div>
-      <h3>🔐 Authentication Screens</h3>
-      <p float="left">
-        <img src="./src/assets/Images/Screenshots/6_Login.png" width="45%" style="border-radius: 8px; margin-right: 10px;" />
-        <img src="./src/assets/Images/Screenshots/7_SignIn.png" width="45%" style="border-radius: 8px;" />
-      </p>
-      
-      <h3>👨‍🎓 Student Experience</h3>
-      <p float="left">
-        <img src="./src/assets/Images/Screenshots/19_StudentDashboard.png" width="45%" style="border-radius: 8px; margin-right: 10px;" />
-        <img src="./src/assets/Images/Screenshots/2_Catalog.png" width="45%" style="border-radius: 8px;" />
-      </p>
-      
-      <h3>👨‍🏫 Course Management</h3>
-      <p float="left">
-        <img src="./src/assets/Images/Screenshots/13_Addcourse.png" width="45%" style="border-radius: 8px; margin-right: 10px;" />
-        <img src="./src/assets/Images/Screenshots/17_InstructorCourses.png" width="45%" style="border-radius: 8px;" />
-      </p>
-    </div>
+    <h3>🔐 Authentication Screens</h3>
+    <p float="left">
+      <img src="./src/assets/Images/Screenshots/6_Login.png" width="45%" style="border-radius: 8px; margin-right: 10px;" />
+      <img src="./src/assets/Images/Screenshots/7_SignIn.png" width="45%" style="border-radius: 8px;" />
+    </p>
+    
+    <h3>👨‍🎓 Student Experience</h3>
+    <p float="left">
+      <img src="./src/assets/Images/Screenshots/19_StudentDashboard.png" width="45%" style="border-radius: 8px; margin-right: 10px;" />
+      <img src="./src/assets/Images/Screenshots/2_Catalog.png" width="45%" style="border-radius: 8px;" />
+    </p>
+    
+    <h3>👨‍🏫 Course Management</h3>
+    <p float="left">
+      <img src="./src/assets/Images/Screenshots/13_Addcourse.png" width="45%" style="border-radius: 8px; margin-right: 10px;" />
+      <img src="./src/assets/Images/Screenshots/17_InstructorCourses.png" width="45%" style="border-radius: 8px;" />
+    </p>
   </details>
 </div>
 
