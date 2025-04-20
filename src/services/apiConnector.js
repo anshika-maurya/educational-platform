@@ -6,6 +6,7 @@ const BASE_URL = process.env.REACT_APP_BASE_URL || "https://server-1-aw2i.onrend
 export const axiosInstance = axios.create({
   baseURL: BASE_URL,
   timeout: 15000,
+  withCredentials: true,
   headers: {
     "Content-Type": "application/json",
   }
