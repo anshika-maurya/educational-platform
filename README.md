@@ -129,7 +129,7 @@
       <img src="./src/assets/Images/Screenshots/7_SignIn.png" width="45%" style="border-radius: 8px;" />
     </p>
     
-    <!-- <h3>👨‍🎓 Student Experience</h3>
+    <h3>👨‍🎓 Student Experience</h3>
     <p float="left">
       <img src="./src/assets/Images/Screenshots/19_StudentDashboard.png" width="45%" style="border-radius: 8px; margin-right: 10px;" />
       <img src="./src/assets/Images/Screenshots/2_Catalog.png" width="45%" style="border-radius: 8px;" />
@@ -139,7 +139,7 @@
     <p float="left">
       <img src="./src/assets/Images/Screenshots/13_Addcourse.png" width="45%" style="border-radius: 8px; margin-right: 10px;" />
       <img src="./src/assets/Images/Screenshots/17_InstructorCourses.png" width="45%" style="border-radius: 8px;" />
-    </p> -->
+    </p>
   </details>
 </div>
 
