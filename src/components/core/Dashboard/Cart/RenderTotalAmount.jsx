@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom"
 import { toast } from "react-hot-toast"
 
 import { BuyCourse } from "../../../../services/operations/studentFeaturesAPI"
-import IconBtn from "../../../common/IconBtn"
+import IconBtn from "../../../Common/IconBtn"
 
 export default function RenderTotalAmount() {
   const { total, cart } = useSelector((state) => state.cart)

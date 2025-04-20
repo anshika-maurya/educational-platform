@@ -4,7 +4,7 @@ import { IoIosArrowBack } from "react-icons/io"
 import { useSelector } from "react-redux"
 import { useLocation, useNavigate, useParams } from "react-router-dom"
 
-import IconBtn from "../../common/IconBtn"
+import IconBtn from "../../Common/IconBtn"
 
 export default function VideoDetailsSidebar({ setReviewModal, closeSidebar }) {
   const [activeStatus, setActiveStatus] = useState("")

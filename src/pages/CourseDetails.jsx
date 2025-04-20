@@ -5,8 +5,8 @@ import { BuyCourse } from '../services/operations/studentFeaturesAPI.js'
 import { fetchCourseDetails } from '../services/operations/courseDetailsAPI'
 import GetAvgRating from '../utils/avgRating'
 import Error from "./Error"
-import ConfirmationModal from "../components/common/ConfirmationModal"
-import RatingStars from "../components/common/RatingStars.jsx"
+import ConfirmationModal from "../components/Common/ConfirmationModal.jsx"
+import RatingStars from "../components/Common/RatingStars.jsx"
 import { formatDate } from '../services/formatDate'
 import { IoIosInformationCircleOutline } from 'react-icons/io'
 import { BsGlobe } from 'react-icons/bs'
@@ -14,7 +14,7 @@ import { BiVideo } from 'react-icons/bi'
 import { MdOutlineArrowForwardIos } from 'react-icons/md'
 import CourseDetailsCard from '../components/core/Course/CourseDetailsCard'
 import { toast } from 'react-hot-toast'
-import Footer from '../components/common/Footer.jsx'
+import Footer from '../components/Common/Footer.jsx'
 import { addToCart } from '../slices/cartSlice'
 
 const CourseDetails = () => {
