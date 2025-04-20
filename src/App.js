@@ -28,9 +28,10 @@ import VerifyEmail from "./pages/VerifyEmail";
 import ViewCourse from "./pages/ViewCourse";
 import { getUserDetails } from "./services/operations/profileAPI";
 import { ACCOUNT_TYPE } from "./utils/constants";
+import Navbar from './components/common/Navbar';
 
 // Lazy load Navbar directly from its file
-const Navbar = lazy(() => import("./components/common/Navbar"));
+// const Navbar = lazy(() => import("./components/common/Navbar"));
 
 function App() {
   const dispatch = useDispatch();
