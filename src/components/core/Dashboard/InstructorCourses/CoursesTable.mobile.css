@@ -1,0 +1,122 @@
+/* Mobile styles for Courses Table */
+@media screen and (max-width: 768px) {
+  /* Override responsive table styles for mobile */
+  .courses-mobile-view .responsive-table {
+    display: block;
+  }
+
+  .courses-mobile-view .responsive-table tbody {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .courses-mobile-view .responsive-table thead {
+    display: none;
+  }
+
+  .courses-mobile-view .responsive-table tr {
+    display: flex;
+    flex-direction: column;
+    background-color: #1A1A23;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    padding: 0;
+    border: 1px solid #2C2C35;
+  }
+
+  .courses-mobile-view .responsive-table td {
+    display: block;
+    padding: 0;
+  }
+
+  /* Course header */
+  .courses-mobile-view .course-header {
+    background-color: #2C2C35;
+    padding: 0.75rem 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .courses-mobile-view .course-content {
+    padding: 0;
+  }
+
+  .courses-mobile-view .course-image {
+    width: 100%;
+    height: 180px;
+    border-radius: 0;
+    object-fit: contain;
+  }
+
+  .courses-mobile-view .course-details {
+    padding: 0.75rem 1rem 1rem;
+  }
+
+  .courses-mobile-view .course-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #F1F2FF;
+    margin-bottom: 0.25rem;
+  }
+
+  .courses-mobile-view .course-description {
+    font-size: 0.875rem;
+    color: #999BAB;
+    margin-bottom: 0.75rem;
+    line-height: 1.4;
+  }
+
+  .courses-mobile-view .course-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0.5rem;
+  }
+
+  .courses-mobile-view .course-created {
+    font-size: 0.75rem;
+    color: #999BAB;
+  }
+
+  .courses-mobile-view .course-created span {
+    color: #FFD60A;
+  }
+
+  .courses-mobile-view .course-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem 1rem;
+  }
+
+  .courses-mobile-view .course-price {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #FFD60A;
+  }
+
+  .courses-mobile-view .course-badge {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    border-radius: 9999px;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  .courses-mobile-view .badge-draft {
+    background-color: #FFDFE5;
+    color: #161616;
+  }
+
+  .courses-mobile-view .badge-published {
+    background-color: #FFD60A;
+    color: #161616;
+  }
+} 

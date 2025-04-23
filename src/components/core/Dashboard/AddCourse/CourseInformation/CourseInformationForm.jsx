@@ -136,6 +136,7 @@ export default function CourseInformationForm() {
       return
     }
 
+    // Add Course - Create new course
     const formData = new FormData()
     formData.append("courseName", data.courseTitle)
     formData.append("courseDescription", data.courseShortDesc)
@@ -146,30 +147,43 @@ export default function CourseInformationForm() {
     formData.append("status", COURSE_STATUS.DRAFT)
     formData.append("instructions", JSON.stringify(data.courseRequirements))
     formData.append("thumbnailImage", data.courseImage)
+    
     setLoading(true)
-    const result = await addCourseDetails(formData, token)
-    if (result) {
-      dispatch(setStep(2))
-      dispatch(setCourse(result))
+    try {
+      const result = await addCourseDetails(formData, token)
+      if (result) {
+        // Update course in Redux
+        dispatch(setCourse(result))
+        // Show success message
+        toast.success("Course added successfully")
+        // Move to next step
+        setTimeout(() => {
+          dispatch(setStep(2))
+        }, 500) // Small delay to ensure toast is visible and state update is complete
+      }
+    } catch (error) {
+      console.error("Error adding course:", error)
+      toast.error("Failed to add course. Please try again.")
+    } finally {
+      setLoading(false)
     }
-    setLoading(false)
   }
 
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="space-y-8 rounded-md border-[1px] border-richblack-700 bg-richblack-800 p-6"
+      className="space-y-6 sm:space-y-8 rounded-md border-[1px] border-richblack-700 bg-richblack-800 p-4 sm:p-6 form-container"
     >
       {/* Course Title */}
-      <div className="flex flex-col space-y-2">
-        <label className="text-sm text-richblack-5" htmlFor="courseTitle">
+      <div className="flex flex-col space-y-2 form-group">
+        <label className="text-sm text-richblack-5 form-label" htmlFor="courseTitle">
           Course Title <sup className="text-pink-200">*</sup>
         </label>
         <input
           id="courseTitle"
           placeholder="Enter Course Title"
           {...register("courseTitle", { required: true })}
-          className="form-style w-full"
+          className="form-style w-full form-input"
         />
         {errors.courseTitle && (
           <span className="ml-2 text-xs tracking-wide text-pink-200">
@@ -178,15 +192,15 @@ export default function CourseInformationForm() {
         )}
       </div>
       {/* Course Short Description */}
-      <div className="flex flex-col space-y-2">
-        <label className="text-sm text-richblack-5" htmlFor="courseShortDesc">
+      <div className="flex flex-col space-y-2 form-group">
+        <label className="text-sm text-richblack-5 form-label" htmlFor="courseShortDesc">
           Course Short Description <sup className="text-pink-200">*</sup>
         </label>
         <textarea
           id="courseShortDesc"
           placeholder="Enter Description"
           {...register("courseShortDesc", { required: true })}
-          className="form-style resize-x-none min-h-[130px] w-full"
+          className="form-style resize-x-none min-h-[100px] sm:min-h-[130px] w-full form-textarea"
         />
         {errors.courseShortDesc && (
           <span className="ml-2 text-xs tracking-wide text-pink-200">
@@ -195,8 +209,8 @@ export default function CourseInformationForm() {
         )}
       </div>
       {/* Course Price */}
-      <div className="flex flex-col space-y-2">
-        <label className="text-sm text-richblack-5" htmlFor="coursePrice">
+      <div className="flex flex-col space-y-2 form-group">
+        <label className="text-sm text-richblack-5 form-label" htmlFor="coursePrice">
           Course Price <sup className="text-pink-200">*</sup>
         </label>
         <div className="relative">
@@ -210,9 +224,9 @@ export default function CourseInformationForm() {
                 value: /^(0|[1-9]\d*)(\.\d+)?$/,
               },
             })}
-            className="form-style w-full !pl-12"
+            className="form-style w-full !pl-12 form-input"
           />
-          <HiOutlineCurrencyRupee className="absolute left-3 top-1/2 inline-block -translate-y-1/2 text-2xl text-richblack-400" />
+          <HiOutlineCurrencyRupee className="absolute left-3 top-1/2 inline-block -translate-y-1/2 text-xl sm:text-2xl text-richblack-400" />
         </div>
         {errors.coursePrice && (
           <span className="ml-2 text-xs tracking-wide text-pink-200">
@@ -221,15 +235,15 @@ export default function CourseInformationForm() {
         )}
       </div>
       {/* Course Category */}
-      <div className="flex flex-col space-y-2">
-        <label className="text-sm text-richblack-5" htmlFor="courseCategory">
+      <div className="flex flex-col space-y-2 form-group">
+        <label className="text-sm text-richblack-5 form-label" htmlFor="courseCategory">
           Course Category <sup className="text-pink-200">*</sup>
         </label>
         <select
           {...register("courseCategory", { required: true })}
           defaultValue=""
           id="courseCategory"
-          className="form-style w-full"
+          className="form-style w-full form-select"
         >
           <option value="" disabled>
             Choose a Category
@@ -257,7 +271,7 @@ export default function CourseInformationForm() {
         setValue={setValue}
         getValues={getValues}
       />
-      {/* Course Thumbnail Image */}
+      {/* Course Thumbnail */}
       <Upload
         name="courseImage"
         label="Course Thumbnail"
@@ -267,15 +281,15 @@ export default function CourseInformationForm() {
         editData={editCourse ? course?.thumbnail : null}
       />
       {/* Benefits of the course */}
-      <div className="flex flex-col space-y-2">
-        <label className="text-sm text-richblack-5" htmlFor="courseBenefits">
+      <div className="flex flex-col space-y-2 form-group">
+        <label className="text-sm text-richblack-5 form-label" htmlFor="courseBenefits">
           Benefits of the course <sup className="text-pink-200">*</sup>
         </label>
         <textarea
           id="courseBenefits"
           placeholder="Enter benefits of the course"
           {...register("courseBenefits", { required: true })}
-          className="form-style resize-x-none min-h-[130px] w-full"
+          className="form-style resize-x-none min-h-[100px] sm:min-h-[130px] w-full form-textarea"
         />
         {errors.courseBenefits && (
           <span className="ml-2 text-xs tracking-wide text-pink-200">
@@ -293,18 +307,27 @@ export default function CourseInformationForm() {
         getValues={getValues}
       />
       {/* Next Button */}
-      <div className="flex justify-end gap-x-2">
-        {editCourse && (
-          <button
-            onClick={() => dispatch(setStep(2))}
-            disabled={loading}
-            className={`flex cursor-pointer items-center gap-x-2 rounded-md bg-richblack-300 py-[8px] px-[20px] font-semibold text-richblack-900`}
-          >
-            Continue Without Saving
-          </button>
-        )}
-        <IconBtn type = {"submit"}
+      <div className="flex justify-end gap-x-2 button-group horizontal">
+        <button
+          disabled={loading}
+          type="button"
+          onClick={() => {
+            // Add a toast notification
+            toast.success("Moving to Course Builder")
+            // Use setTimeout to ensure the toast appears before navigation
+            setTimeout(() => {
+              dispatch(setStep(2))
+            }, 300)
+          }}
+          className="flex cursor-pointer items-center gap-x-2 rounded-md bg-richblack-300 py-[8px] px-[20px] font-semibold text-richblack-900 action-btn"
+        >
+          Continue Without Saving
+        </button>
+        <IconBtn
+          type="submit"
+          disabled={loading}
           text={!editCourse ? "Next" : "Save Changes"}
+          customClasses="action-btn"
         >
           <MdNavigateNext />
         </IconBtn>

@@ -146,7 +146,7 @@
 <br>
 
 <div align="center">
-  <a href="https://studynotion-frontend-ashy.vercel.app/" target="_blank">
+  <a href="https://educational-platform-16.vercel.app/" target="_blank">
     <img src="https://img.shields.io/badge/View_Live_Demo-FF5722?style=for-the-badge&logo=vercel&logoColor=white" alt="View Live Demo" />
   </a>
 </div>
@@ -296,7 +296,7 @@ We welcome contributions to make StudyNotion even better! Please follow these st
   <p>Making learning accessible, interactive, and impactful!</p>
   <br>
   <p>
-    <a href="https://studynotion-frontend-ashy.vercel.app/">
+    <a href="https://educational-platform-16.vercel.app/">
       <img src="https://img.shields.io/badge/Visit_Website-4285F4?style=for-the-badge&logo=google-chrome&logoColor=white" alt="Visit Website" />
     </a>
   </p>

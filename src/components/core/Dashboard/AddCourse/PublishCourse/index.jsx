@@ -64,14 +64,14 @@ export default function PublishCourse() {
   }
 
   return (
-    <div className="rounded-md border-[1px] border-richblack-700 bg-richblack-800 p-6">
-      <p className="text-2xl font-semibold text-richblack-5">
+    <div className="rounded-md border-[1px] border-richblack-700 bg-richblack-800 p-4 sm:p-6 form-container">
+      <p className="text-xl sm:text-2xl font-semibold text-richblack-5 form-heading">
         Publish Settings
       </p>
       <form onSubmit={handleSubmit(onSubmit)}>
         {/* Checkbox */}
-        <div className="my-6 mb-8">
-          <label htmlFor="public" className="inline-flex items-center text-lg">
+        <div className="my-4 sm:my-6 mb-6 sm:mb-8 publish-checkbox">
+          <label htmlFor="public" className="inline-flex items-center text-base sm:text-lg">
             <input
               type="checkbox"
               id="public"
@@ -85,16 +85,20 @@ export default function PublishCourse() {
         </div>
 
         {/* Next Prev Button */}
-        <div className="ml-auto flex max-w-max items-center gap-x-4">
+        <div className="flex flex-col-reverse sm:flex-row justify-end gap-y-4 sm:gap-y-0 gap-x-4 button-group">
           <button
             disabled={loading}
             type="button"
             onClick={goBack}
-            className="flex cursor-pointer items-center gap-x-2 rounded-md bg-richblack-300 py-[8px] px-[20px] font-semibold text-richblack-900"
+            className="flex cursor-pointer items-center justify-center gap-x-2 rounded-md bg-richblack-300 py-[8px] px-[20px] font-semibold text-richblack-900 action-btn"
           >
             Back
           </button>
-          <IconBtn disabled={loading} text="Save Changes" />
+          <IconBtn 
+            disabled={loading} 
+            text="Save Changes" 
+            customClasses="action-btn"
+          />
         </div>
       </form>
     </div>

@@ -100,11 +100,11 @@ export default function CourseBuilderForm() {
   }
 
   return (
-    <div className="space-y-8 rounded-md border-[1px] border-richblack-700 bg-richblack-800 p-6">
-      <p className="text-2xl font-semibold text-richblack-5">Course Builder</p>
+    <div className="space-y-6 sm:space-y-8 rounded-md border-[1px] border-richblack-700 bg-richblack-800 p-4 sm:p-6 form-container">
+      <p className="text-xl sm:text-2xl font-semibold text-richblack-5 form-heading">Course Builder</p>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-        <div className="flex flex-col space-y-2">
-          <label className="text-sm text-richblack-5" htmlFor="sectionName">
+        <div className="flex flex-col space-y-2 form-group">
+          <label className="text-sm text-richblack-5 form-label" htmlFor="sectionName">
             Section Name <sup className="text-pink-200">*</sup>
           </label>
           <input
@@ -112,7 +112,7 @@ export default function CourseBuilderForm() {
             disabled={loading}
             placeholder="Add a section to build your course"
             {...register("sectionName", { required: true })}
-            className="form-style w-full"
+            className="form-style w-full form-input"
           />
           {errors.sectionName && (
             <span className="ml-2 text-xs tracking-wide text-pink-200">
@@ -126,6 +126,7 @@ export default function CourseBuilderForm() {
             disabled={loading}
             text={editSectionName ? "Edit Section Name" : "Create Section"}
             outline={true}
+            customClasses="action-btn"
           >
             <IoAddCircleOutline size={20} className="text-yellow-50" />
           </IconBtn>
@@ -141,17 +142,24 @@ export default function CourseBuilderForm() {
         </div>
       </form>
       {course.courseContent.length > 0 && (
-        <NestedView handleChangeEditSectionName={handleChangeEditSectionName} />
+        <div className="nested-section">
+          <NestedView handleChangeEditSectionName={handleChangeEditSectionName} />
+        </div>
       )}
       {/* Next Prev Button */}
-      <div className="flex justify-end gap-x-3">
+      <div className="flex flex-col-reverse sm:flex-row justify-end gap-y-4 sm:gap-y-0 gap-x-3 button-group">
         <button
           onClick={goBack}
-          className={`flex cursor-pointer items-center gap-x-2 rounded-md bg-richblack-300 py-[8px] px-[20px] font-semibold text-richblack-900`}
+          className="flex cursor-pointer items-center justify-center gap-x-2 rounded-md bg-richblack-300 py-[8px] px-[20px] font-semibold text-richblack-900 action-btn"
         >
           Back
         </button>
-        <IconBtn disabled={loading} text="Next" onClick={goToNext}>
+        <IconBtn 
+          disabled={loading} 
+          text="Next" 
+          onClick={goToNext}
+          customClasses="action-btn"
+        >
           <MdNavigateNext />
         </IconBtn>
       </div>

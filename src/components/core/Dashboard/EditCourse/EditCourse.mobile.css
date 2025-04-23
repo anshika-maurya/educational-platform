@@ -1,0 +1,106 @@
+/* Mobile styles for Edit Course */
+@media screen and (max-width: 768px) {
+  .edit-course-mobile .step-progress {
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+
+  .edit-course-mobile .step-progress-line {
+    width: 25%;
+  }
+
+  .edit-course-mobile .step-labels {
+    font-size: 12px;
+    gap: 5px;
+  }
+
+  .edit-course-mobile .form-container {
+    padding: 16px;
+  }
+
+  .edit-course-mobile .form-heading {
+    font-size: 1.25rem;
+    margin-bottom: 16px;
+  }
+
+  .edit-course-mobile .form-group {
+    margin-bottom: 16px;
+  }
+
+  .edit-course-mobile .form-label {
+    font-size: 14px;
+    margin-bottom: 4px;
+  }
+
+  .edit-course-mobile .form-input,
+  .edit-course-mobile .form-textarea,
+  .edit-course-mobile .form-select {
+    padding: 8px 12px;
+    font-size: 14px;
+  }
+
+  .edit-course-mobile .form-textarea {
+    min-height: 100px;
+  }
+
+  .edit-course-mobile .chip-container {
+    flex-wrap: wrap;
+  }
+
+  .edit-course-mobile .chip-item {
+    margin-bottom: 8px;
+  }
+
+  .edit-course-mobile .upload-container {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .edit-course-mobile .upload-label {
+    width: 100%;
+  }
+
+  .edit-course-mobile .upload-input {
+    width: 100%;
+  }
+
+  .edit-course-mobile .button-group {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .edit-course-mobile .button-group.horizontal {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .edit-course-mobile .action-btn {
+    padding: 8px 12px;
+    font-size: 14px;
+  }
+
+  .edit-course-mobile .nested-section {
+    padding: 10px;
+  }
+
+  .edit-course-mobile .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .edit-course-mobile .section-header-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .edit-course-mobile .subsection-list {
+    margin-left: 10px;
+  }
+
+  .edit-course-mobile .publish-checkbox {
+    margin-bottom: 24px;
+  }
+} 
