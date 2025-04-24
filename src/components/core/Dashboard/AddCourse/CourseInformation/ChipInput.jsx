@@ -22,8 +22,7 @@ export default function ChipInput({
 
   useEffect(() => {
     if (editCourse) {
-      // console.log(course)
-      setChips(course?.tag)
+      setChips(course?.tag || [])
     }
     register(name, { required: true, validate: (value) => value.length > 0 })
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -40,15 +39,34 @@ export default function ChipInput({
     if (event.key === "Enter" || event.key === ",") {
       // Prevent the default behavior of the event
       event.preventDefault()
-      // Get the input value and remove any leading/trailing spaces
-      const chipValue = event.target.value.trim()
-      // Check if the input value exists and is not already in the chips array
-      if (chipValue && !chips.includes(chipValue)) {
-        // Add the chip to the array and clear the input
-        const newChips = [...chips, chipValue]
-        setChips(newChips)
-        event.target.value = ""
-      }
+      addChip(event.target.value)
+      event.target.value = ""
+    }
+  }
+
+  // Function to handle input blur (mobile "Done" key)
+  const handleBlur = (event) => {
+    addChip(event.target.value)
+    event.target.value = ""
+  }
+
+  // Function to handle comma paste or typing in change
+  const handleChange = (event) => {
+    const { value } = event.target
+    if (value.includes(",")) {
+      const parts = value.split(",")
+      // Add all except last incomplete part
+      parts.slice(0, -1).forEach((part) => addChip(part))
+      // Leave the last segment in input
+      event.target.value = parts[parts.length - 1]
+    }
+  }
+
+  // Shared logic to add a chip
+  const addChip = (rawValue) => {
+    const chipValue = rawValue.trim()
+    if (chipValue && !chips.includes(chipValue)) {
+      setChips((prev) => [...prev, chipValue])
     }
   }
 
@@ -93,6 +111,8 @@ export default function ChipInput({
           type="text"
           placeholder={placeholder}
           onKeyDown={handleKeyDown}
+          onChange={handleChange}
+          onBlur={handleBlur}
           className="form-style w-full"
         />
       </div>

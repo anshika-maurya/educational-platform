@@ -262,11 +262,18 @@ export default function CourseInformationForm() {
       <ChipInput
         label="Tags"
         name="courseTags"
-        placeholder="Enter Tags and press Enter"
+        placeholder="Enter Tags and press Enter or Done"
         register={register}
         errors={errors}
         setValue={setValue}
         getValues={getValues}
+      
+        
+        // listen for both Enter (key = "Enter", code 13) and comma (key = ",", code 188)
+        newChipKeys={['Enter', ',']}
+        newChipKeyCodes={[13, 188]}
+        // when input loses focus (mobile “Done”), add whatever text remains
+        blurBehavior="add"
       />
       {/* Course Thumbnail */}
       <Upload
