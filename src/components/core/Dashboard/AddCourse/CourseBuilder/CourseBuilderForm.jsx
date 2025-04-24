@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-hot-toast"
 import { IoAddCircleOutline } from "react-icons/io5"
@@ -30,6 +30,23 @@ export default function CourseBuilderForm() {
   const [loading, setLoading] = useState(false)
   const [editSectionName, setEditSectionName] = useState(null)
   const dispatch = useDispatch()
+
+  useEffect(() => {
+    // Validate course structure when component mounts or course changes
+    if (course && course.courseContent) {
+      // Log course structure for debugging
+      console.log("Current course structure:", course.courseContent);
+      
+      // Check for any invalid sections
+      const hasInvalidSections = course.courseContent.some(
+        section => !section || typeof section !== 'object' || !section.sectionName
+      );
+      
+      if (hasInvalidSections) {
+        console.warn("Course contains invalid sections:", course.courseContent);
+      }
+    }
+  }, [course]);
 
   // handle form submission
   const onSubmit = async (data) => {
@@ -91,10 +108,19 @@ export default function CourseBuilderForm() {
       toast.error("Please add atleast one lecture in each section")
       return
     }
+    
+    // Success toast notification
+    toast.success("Moving to the Publish page")
+    
+    // Directly set the step in Redux
     dispatch(setStep(3))
   }
 
   const goBack = () => {
+    // Success toast notification
+    toast.success("Moving back to Course Information")
+    
+    // Directly set the step in Redux
     dispatch(setStep(1))
     dispatch(setEditCourse(true))
   }
@@ -154,14 +180,14 @@ export default function CourseBuilderForm() {
         >
           Back
         </button>
-        <IconBtn 
-          disabled={loading} 
-          text="Next" 
+        <button
+          disabled={loading}
           onClick={goToNext}
-          customClasses="action-btn"
+          className="flex cursor-pointer items-center gap-x-2 rounded-md bg-yellow-50 py-[8px] px-[20px] font-semibold text-richblack-900 action-btn"
         >
-          <MdNavigateNext />
-        </IconBtn>
+          Next
+          <MdNavigateNext className="text-xl" />
+        </button>
       </div>
     </div>
   )

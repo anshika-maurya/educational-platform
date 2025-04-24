@@ -127,8 +127,8 @@ export default function CourseInformationForm() {
         const result = await editCourseDetails(formData, token)
         setLoading(false)
         if (result) {
-          dispatch(setStep(2))
           dispatch(setCourse(result))
+          dispatch(setStep(2))
         }
       } else {
         toast.error("No changes made to the form")
@@ -152,14 +152,11 @@ export default function CourseInformationForm() {
     try {
       const result = await addCourseDetails(formData, token)
       if (result) {
-        // Update course in Redux
+        // First, update course in Redux
         dispatch(setCourse(result))
-        // Show success message
-        toast.success("Course added successfully")
-        // Move to next step
-        setTimeout(() => {
-          dispatch(setStep(2))
-        }, 500) // Small delay to ensure toast is visible and state update is complete
+        
+        // Then move to the next step 
+        dispatch(setStep(2))
       }
     } catch (error) {
       console.error("Error adding course:", error)
@@ -308,21 +305,22 @@ export default function CourseInformationForm() {
       />
       {/* Next Button */}
       <div className="flex justify-end gap-x-2 button-group horizontal">
+      {editCourse ? (
         <button
-          disabled={loading}
-          type="button"
+          
           onClick={() => {
             // Add a toast notification
             toast.success("Moving to Course Builder")
-            // Use setTimeout to ensure the toast appears before navigation
-            setTimeout(() => {
-              dispatch(setStep(2))
-            }, 300)
+            // Immediately move to next step
+            dispatch(setStep(2))
           }}
+          disabled={loading}
+          type="button"
           className="flex cursor-pointer items-center gap-x-2 rounded-md bg-richblack-300 py-[8px] px-[20px] font-semibold text-richblack-900 action-btn"
         >
           Continue Without Saving
         </button>
+      ) : null}
         <IconBtn
           type="submit"
           disabled={loading}
@@ -331,6 +329,8 @@ export default function CourseInformationForm() {
         >
           <MdNavigateNext />
         </IconBtn>
+
+       
       </div>
     </form>
   )

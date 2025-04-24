@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form"
 import { toast } from "react-hot-toast"
 import { RxCross2 } from "react-icons/rx"
 import { useDispatch, useSelector } from "react-redux"
+import axios from "axios"
 
 import {
   createSubSection,
@@ -11,6 +12,7 @@ import {
 import { setCourse } from "../../../../../slices/courseSlice"
 import IconBtn from "../../../../Common/IconBtn"
 import Upload from "./Upload"
+import { courseEndpoints } from "../../../../../services/apis"
 
 export default function SubSectionModal({
   modalData,
@@ -35,6 +37,65 @@ export default function SubSectionModal({
   const [loading, setLoading] = useState(false)
   const { token } = useSelector((state) => state.auth)
   const { course } = useSelector((state) => state.course)
+
+  // Function to fetch the full course data as a fallback
+  const fetchUpdatedCourse = async () => {
+    if (!course || !course._id) {
+      console.error("Cannot fetch course: course ID is missing")
+      return false
+    }
+    
+    try {
+      console.log("Fetching full course details with ID:", course._id)
+      
+      // Try explicitly using the full endpoint path
+      const fullEndpointPath = "/course/getFullCourseDetails"
+      
+      const response = await axios.post(
+        `${process.env.REACT_APP_BASE_URL}${fullEndpointPath}`,
+        { courseId: course._id },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+      
+      console.log("Full course details response:", response)
+      
+      if (response.data && response.data.success) {
+        const courseData = response.data.data
+        
+        if (!courseData) {
+          console.error("Received success response but no course data")
+          return false
+        }
+        
+        console.log("Successfully fetched full course data:", courseData)
+        
+        // Validate the data has the expected structure
+        if (!courseData._id || !Array.isArray(courseData.courseContent)) {
+          console.error("Received course data has invalid structure:", courseData)
+          return false
+        }
+        
+        // Update Redux state with the fresh course data
+        dispatch(setCourse(courseData))
+        return true
+      } else {
+        console.warn("Could not fetch updated course data:", response.data)
+        return false
+      }
+    } catch (error) {
+      console.error("Error fetching updated course data:", error)
+      
+      if (error.response) {
+        console.log("Fetch error response data:", error.response.data)
+      }
+      
+      return false
+    }
+  }
 
   useEffect(() => {
     if (view || edit) {
@@ -92,7 +153,6 @@ export default function SubSectionModal({
   }
 
   const onSubmit = async (data) => {
-    // console.log(data)
     if (view) return
 
     if (edit) {
@@ -104,23 +164,154 @@ export default function SubSectionModal({
       return
     }
 
-    const formData = new FormData()
-    formData.append("sectionId", modalData)
-    formData.append("title", data.lectureTitle)
-    formData.append("description", data.lectureDesc)
-    formData.append("video", data.lectureVideo)
+    // Add Subsection
     setLoading(true)
-    const result = await createSubSection(formData, token)
-    if (result) {
-      // update the structure of course
-      const updatedCourseContent = course.courseContent.map((section) =>
-        section._id === modalData ? result : section
+    
+    try {
+      // Validate the modalData (should be a section ID)
+      if (!modalData) {
+        throw new Error("Section ID is missing")
+      }
+      
+      // Create FormData
+      const formData = new FormData()
+      formData.append("sectionId", modalData)
+      formData.append("title", data.lectureTitle)
+      formData.append("description", data.lectureDesc)
+      formData.append("video", data.lectureVideo)
+      
+      // Direct API call using axios with full error logs
+      console.log("Sending request to add lecture with section ID:", modalData)
+      const response = await axios.post(
+        `${process.env.REACT_APP_BASE_URL}${courseEndpoints.CREATE_SUBSECTION_API}`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       )
-      const updatedCourse = { ...course, courseContent: updatedCourseContent }
-      dispatch(setCourse(updatedCourse))
+      
+      console.log("Full API response:", response)
+      
+      // Handle any possible response structure
+      if (response.data) {
+        console.log("Response data:", response.data)
+        
+        // Try to find the updated section data in any possible location
+        let updatedSection = null
+        
+        if (response.data.updatedSection) {
+          updatedSection = response.data.updatedSection
+        } else if (response.data.data) {
+          updatedSection = response.data.data
+        } else if (response.data.section) {
+          updatedSection = response.data.section
+        } else if (Array.isArray(response.data) && response.data.length > 0) {
+          // Maybe the API returns an array of sections
+          const possibleSection = response.data.find(item => 
+            item._id === modalData || (item.sectionId === modalData)
+          )
+          if (possibleSection) {
+            updatedSection = possibleSection
+          }
+        }
+        
+        // If we found updated section data, use it
+        if (updatedSection && typeof updatedSection === 'object') {
+          console.log("Found updated section:", updatedSection)
+          
+          try {
+            // Create a safe copy of the current course content
+            const currentContent = Array.isArray(course.courseContent) 
+              ? [...course.courseContent] 
+              : []
+            
+            // Find the section index to update
+            const sectionIndex = currentContent.findIndex(
+              section => section._id === modalData
+            )
+            
+            // If section exists, update it, otherwise add the new section
+            if (sectionIndex >= 0) {
+              currentContent[sectionIndex] = updatedSection
+            } else {
+              console.log("Section not found in current content, adding new section")
+              currentContent.push(updatedSection)
+            }
+            
+            // Create updated course with the new content
+            const updatedCourse = {
+              ...course,
+              courseContent: currentContent
+            }
+            
+            // Update Redux state
+            dispatch(setCourse(updatedCourse))
+            toast.success("Lecture added successfully")
+            
+            // Close modal after a short delay
+            setTimeout(() => {
+              setModalData(null)
+            }, 1000)
+          } catch (stateError) {
+            console.error("Failed to update state:", stateError)
+            toast.error("Lecture was added but UI failed to update. Please refresh the page.")
+          }
+        } else {
+          // If we couldn't find the updated section in the response, try fetching the full course
+          console.warn("Could not find updated section in response. Fetching full course data...")
+          
+          const fetchSuccess = await fetchUpdatedCourse()
+          
+          if (fetchSuccess) {
+            toast.success("Lecture added successfully")
+          } else {
+            toast.success("Lecture may have been added. Please refresh to see changes.")
+          }
+          
+          // Close the modal in any case
+          setModalData(null)
+        }
+      } else {
+        console.error("Received empty response from server")
+        toast.error("Server returned empty response. Please try again.")
+      }
+    } catch (error) {
+      console.error("Error adding lecture:", error)
+      
+      // Show detailed error information in console for debugging
+      if (error.response) {
+        console.log("Error status:", error.response.status)
+        console.log("Error headers:", error.response.headers)
+        console.log("Error data:", error.response.data)
+        
+        // If the error was 500 (server error) but the lecture might have been created,
+        // try to fetch the updated course data as a fallback
+        if (error.response.status === 500) {
+          console.log("Server error occurred, but lecture might have been added. Attempting to fetch updated course data...")
+          
+          const fetchSuccess = await fetchUpdatedCourse()
+          
+          if (fetchSuccess) {
+            toast.success("Lecture was likely added despite server error. Please check if it appears.")
+            setModalData(null)
+            return
+          }
+        }
+        
+        toast.error(error.response.data?.message || `Server error: ${error.response.status}`)
+      } else if (error.request) {
+        console.log("Error request:", error.request)
+        toast.error("No response received from server. Please check your connection.")
+      } else {
+        console.log("Error message:", error.message)
+        toast.error(error.message || "Unknown error occurred")
+      }
+    } finally {
+      setLoading(false)
     }
-    setModalData(null)
-    setLoading(false)
   }
 
   return (
@@ -190,10 +381,13 @@ export default function SubSectionModal({
           </div>
           {!view && (
             <div className="flex justify-end">
-              <IconBtn
+              <button
+                type="submit"
                 disabled={loading}
-                text={loading ? "Loading.." : edit ? "Save Changes" : "Save"}
-              />
+                className="flex items-center gap-x-2 bg-yellow-50 py-2 px-4 rounded-md font-semibold text-richblack-900"
+              >
+                {loading ? "Loading..." : edit ? "Save Changes" : "Save"}
+              </button>
             </div>
           )}
         </form>

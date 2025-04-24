@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
+import { toast } from "react-hot-toast"
 
 import { editCourseDetails } from "../../../../../services/operations/courseDetailsAPI"
 import { resetCourseState, setStep } from "../../../../../slices/courseSlice"
@@ -24,6 +25,7 @@ export default function PublishCourse() {
   }, [])
 
   const goBack = () => {
+    toast.success("Moving back to Course Builder")
     dispatch(setStep(2))
   }
 
@@ -94,11 +96,13 @@ export default function PublishCourse() {
           >
             Back
           </button>
-          <IconBtn 
-            disabled={loading} 
-            text="Save Changes" 
-            customClasses="action-btn"
-          />
+          <button
+            disabled={loading}
+            type="submit"
+            className="flex cursor-pointer items-center gap-x-2 rounded-md bg-yellow-50 py-[8px] px-[20px] font-semibold text-richblack-900 action-btn"
+          >
+            Save Changes
+          </button>
         </div>
       </form>
     </div>
