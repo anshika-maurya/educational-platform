@@ -28,10 +28,8 @@ import VerifyEmail from "./pages/VerifyEmail";
 import ViewCourse from "./pages/ViewCourse";
 import { getUserDetails } from "./services/operations/profileAPI";
 import { ACCOUNT_TYPE } from "./utils/constants";
-import Navbar from "./components/Common/Navbar"
-
-// Lazy load Navbar directly from its file
-// const Navbar = lazy(() => import("./components/common/Navbar"));
+import Navbar from "./components/Common/Navbar";
+import toast, { Toaster } from "react-hot-toast"; 
 
 function App() {
   const dispatch = useDispatch();
@@ -40,16 +38,41 @@ function App() {
 
   useEffect(() => {
     const token = localStorage.getItem("token") ? JSON.parse(localStorage.getItem("token")) : null;
-    if (token) {
-      dispatch(getUserDetails(token, navigate));
-    }
-  }, [dispatch, navigate]);
+    
+   // Show professional toast only once per device
+  const toastShown = localStorage.getItem("render_toast_shown");
+  if (!toastShown) {
+    toast.success(
+      "Thanks for visiting! Kindly note: The backend is hosted on a free Render service, so the first load may take 10–15 seconds. We appreciate your patience.",
+      {
+        duration: 17000,
+        style: {
+          background: "#1e293b", // cool dark blue
+          color: "#f1f5f9", // subtle light text
+          border: "1px solid #334155",
+          padding: "16px",
+          fontSize: "14px",
+          borderRadius: "8px",
+        },
+      }
+    );
+    localStorage.setItem("render_toast_shown", "true");
+  }
+
+  if (token) {
+    dispatch(getUserDetails(token, navigate));
+  }
+}, [dispatch, navigate]);
 
   return (
     <div className="flex min-h-screen w-screen flex-col bg-richblack-900 font-inter">
+      {/*Toast container */}
+      <Toaster position="top-center" reverseOrder={false} />
+
       <Suspense fallback={<div className="h-14 border-b border-richblack-700"></div>}>
         <Navbar />
       </Suspense>
+
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
@@ -58,55 +81,14 @@ function App() {
         <Route path="catalog/:catalogName" element={<Catalog />} />
 
         {/* Open Routes */}
-        <Route
-          path="login"
-          element={
-            <OpenRoute>
-              <Login />
-            </OpenRoute>
-          }
-        />
-        <Route
-          path="forgot-password"
-          element={
-            <OpenRoute>
-              <ForgotPassword />
-            </OpenRoute>
-          }
-        />
-        <Route
-          path="update-password/:id"
-          element={
-            <OpenRoute>
-              <UpdatePassword />
-            </OpenRoute>
-          }
-        />
-        <Route
-          path="signup"
-          element={
-            <OpenRoute>
-              <Signup />
-            </OpenRoute>
-          }
-        />
-        <Route
-          path="verify-email"
-          element={
-            <OpenRoute>
-              <VerifyEmail />
-            </OpenRoute>
-          }
-        />
+        <Route path="login" element={<OpenRoute><Login /></OpenRoute>} />
+        <Route path="forgot-password" element={<OpenRoute><ForgotPassword /></OpenRoute>} />
+        <Route path="update-password/:id" element={<OpenRoute><UpdatePassword /></OpenRoute>} />
+        <Route path="signup" element={<OpenRoute><Signup /></OpenRoute>} />
+        <Route path="verify-email" element={<OpenRoute><VerifyEmail /></OpenRoute>} />
 
         {/* Private Routes */}
-        <Route
-          element={
-            <PrivateRoute>
-              <Dashboard />
-            </PrivateRoute>
-          }
-        >
+        <Route element={<PrivateRoute><Dashboard /></PrivateRoute>}>
           <Route path="dashboard/my-profile" element={<MyProfile />} />
           <Route path="dashboard/settings" element={<Settings />} />
           {user?.accountType === ACCOUNT_TYPE.INSTRUCTOR && (
@@ -126,13 +108,7 @@ function App() {
         </Route>
 
         {/* Watching lectures */}
-        <Route
-          element={
-            <PrivateRoute>
-              <ViewCourse />
-            </PrivateRoute>
-          }
-        >
+        <Route element={<PrivateRoute><ViewCourse /></PrivateRoute>}>
           {user?.accountType === ACCOUNT_TYPE.STUDENT && (
             <Route
               path="view-course/:courseId/section/:sectionId/sub-section/:subSectionId"
