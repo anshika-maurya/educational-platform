@@ -33,7 +33,7 @@ export default function CourseReviewModal({ setReviewModal })  {
   }
 
   const onSubmit = async (data) => {
-  const res = await createRating(
+    const success = await createRating(
       {
         // courseId: courseEntireData._id,
         courseId: courseId,
@@ -42,7 +42,9 @@ export default function CourseReviewModal({ setReviewModal })  {
       },
       token
     )
-    setReviewModal(false)
+    if (success) {
+      setReviewModal(false)
+    }
   }
 
   return (
@@ -101,12 +103,13 @@ export default function CourseReviewModal({ setReviewModal })  {
             </div>
             <div className="mt-6 flex w-11/12 justify-end gap-x-2">
               <button
+                type="button"
                 onClick={() => setReviewModal(false)}
                 className={`flex cursor-pointer items-center gap-x-2 rounded-md bg-richblack-300 py-[8px] px-[20px] font-semibold text-richblack-900`}
               >
                 Cancel
               </button>
-              <IconBtn text="Save" />
+              <IconBtn text="Save" type="submit" />
             </div>
           </form>
         </div>
